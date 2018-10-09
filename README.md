@@ -64,3 +64,50 @@ ZMCintegral returns:
 result = [-1.0458851 25.799936   2.249969 ]    std = [0.00040938 0.00066065 0.0002065 ]
 ```
 ###### tune parameters
+The following four parameters can be tuned to fit special cases.
+| parameter | usage | example |default|
+| ------ | ------ | ------ | ------ |
+| available_GPU | Specify gpu used in calculation.|[0,1]|ALL GPUs detected
+| num_trials | Evaluate the integration for num_trials times. Better kept within 10. |10|5
+| depth | For importance sampling. A domain is magnified for depth times. Better kept within 5. |3|2
+| sigma_multiplication | For importance sampling. Only domains that have very large standardand deviations (hence, very unstable) should be magnified and re-evaluated. Domains which are beyond sigma_multiplication * $$\sigma$$ should be recalculated.|3|4
+IF the integration is pretty normal, the default configuration is recomanded.
+IF the integration is really sharped, one can try increasing depth or decreasing sigma_multiplication.
+IF the resulted std is too large, one can try increasing num_trials.
+
+
+License
+----
+
+The package is coded by ZHANG Junjie of University of Science and Technology of China.
+
+**This package is free**
+you can redistribute it and/or modify it under the terms of 
+the Apache License Version 2.0, January 2004 (http://www.apache.org/licenses/).
+
+
+
+
+[//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
+
+
+   [dill]: <https://github.com/joemccann/dillinger>
+   [git-repo-url]: <https://github.com/joemccann/dillinger.git>
+   [john gruber]: <http://daringfireball.net>
+   [df1]: <http://daringfireball.net/projects/markdown/>
+   [markdown-it]: <https://github.com/markdown-it/markdown-it>
+   [Ace Editor]: <http://ace.ajax.org>
+   [node.js]: <http://nodejs.org>
+   [Twitter Bootstrap]: <http://twitter.github.com/bootstrap/>
+   [jQuery]: <http://jquery.com>
+   [@tjholowaychuk]: <http://twitter.com/tjholowaychuk>
+   [express]: <http://expressjs.com>
+   [AngularJS]: <http://angularjs.org>
+   [Gulp]: <http://gulpjs.com>
+
+   [PlDb]: <https://github.com/joemccann/dillinger/tree/master/plugins/dropbox/README.md>
+   [PlGh]: <https://github.com/joemccann/dillinger/tree/master/plugins/github/README.md>
+   [PlGd]: <https://github.com/joemccann/dillinger/tree/master/plugins/googledrive/README.md>
+   [PlOd]: <https://github.com/joemccann/dillinger/tree/master/plugins/onedrive/README.md>
+   [PlMe]: <https://github.com/joemccann/dillinger/tree/master/plugins/medium/README.md>
+   [PlGa]: <https://github.com/RahulHP/dillinger/blob/master/plugins/googleanalytics/README.md>
