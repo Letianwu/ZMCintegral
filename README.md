@@ -72,6 +72,7 @@ The following four parameters can be tuned to fit special cases.
 | num_trials | Evaluate the integration for num_trials times. Better kept within 10. |10|5|
 | depth | For importance sampling. A domain is magnified for depth times. Better kept within 5. |3|2|
 | sigma_multiplication | For importance sampling. Only domains that have very large standardand deviations (hence, very unstable) should be magnified and re-evaluated. Domains which are beyond sigma_multiplication * $$\sigma$$ should be recalculated.|3|4|
+
 IF the integration is pretty normal, the default configuration is recomanded.
 IF the integration is really sharped, one can try increasing depth or decreasing sigma_multiplication.
 IF the resulted std is too large, one can try increasing num_trials.
