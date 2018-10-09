@@ -78,6 +78,11 @@ IF the integration is pretty normal, the default configuration is recomanded.
 IF the integration is really sharped, one can try increasing depth or decreasing sigma_multiplication.
 IF the resulted std is too large, one can try increasing num_trials.
 
+```
+ZMCintegral.MCintegral(my_func,[[0,1],[0,2],[0,5],[0,0.6]],
+available_GPU=[0,1],num_trials=3,depth=3,sigma_multiplication=3).MCresult
+```
+
 License
 ----
 
