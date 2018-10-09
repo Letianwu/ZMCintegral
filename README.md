@@ -7,7 +7,6 @@ ZMCintegral is a python package which uses Monte Carlo Method to do numerical in
 
   - Multi-dimension integration
   - Multi-GPU device
-  - Importance sampling
 
 
 ###### To understand how ZMCintegral works, please refer to
