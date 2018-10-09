@@ -81,7 +81,7 @@ IF the resulted std is too large, one can try increasing num_trials.
 License
 ----
 
-The package is coded by ZHANG Junjie of University of Science and Technology of China.
+The package is coded by ZHANG Junjie and checked by WU Hongzhong of University of Science and Technology of China.
 
 **This package is free**
 you can redistribute it and/or modify it under the terms of 
