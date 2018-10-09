@@ -66,10 +66,11 @@ result = [-1.0458851 25.799936   2.249969 ]    std = [0.00040938 0.00066065 0.00
 ###### tune parameters
 
 The following four parameters can be tuned to fit special cases.
-| parameter | usage | example |default|
-| ------ |:------:|:------:| ------:|
-| available_GPU | Specify gpu used in calculation.|[0,1]|ALL GPUs detected|
-| num_trials | Evaluate the integration for num_trials times. Better kept within 10. |10|5|
+
+| parameter        | usage           | example           | default  |
+| ------------- |:-------------:|:-------------:| -----:|
+| available_GPU      | Specify gpu used in calculation. | [0,1] | ALL GPUs detected |
+| num_trials     | Evaluate the integration for num_trials times. Better kept within 10. | 10 | 5 |
 | depth | For importance sampling. A domain is magnified for depth times. Better kept within 5. |3|2|
 | sigma_multiplication | For importance sampling. Only domains that have very large standardand deviations (hence, very unstable) should be magnified and re-evaluated. Domains which are beyond sigma_multiplication * $$\sigma$$ should be recalculated.|3|4|
 
