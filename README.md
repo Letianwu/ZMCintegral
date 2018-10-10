@@ -103,7 +103,7 @@ available_GPU=[0,1],num_trials=3,depth=3,sigma_multiplication=3).evaluate()
 
 ###### grid reconfiguration
 
-ZMCintegral supports the user to reconfigure the grid size and chunk size. eg:
+ZMCintegral supports the user to reconfigure the chunk size. eg:
 
 ```sh
 import tensorflow as tf
@@ -115,9 +115,8 @@ def my_func(x):
 
 MC = ZMCintegral.MCintegral(my_func,[[0,1],[0,2],[0,5],[0,0.6]])
 
-# reconfiguration of grid size and chunk size.
-MC.n_grid = 320**4
-MC.chunk_size = 64**4
+# reconfiguration of chunk size.
+MC.chunk_size_x = 64
 
 # obtaining the result
 result = MC.evaluate()
@@ -125,6 +124,8 @@ result = MC.evaluate()
 # print the formatted result
 print('result = %s    std = %s' % (result[0], result[1]))
 ```
+Tip: when to change chunk_size_x?
+One can monitor the gpu utilization rate when eavalutaing the integration. If the utilization rate is really small, then one needs to consider increasing chunk_size_x at a cost of consuming more time resources.
 
 License
 ----
