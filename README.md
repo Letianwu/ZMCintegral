@@ -30,13 +30,16 @@ to install ZMC integral.
 Integration of the following expression:
 ![Image of expression 1](./examples/example01.png)
 ```sh
-import ZMCintegral
 import tensorflow as tf
+import ZMCintegral
+
 # user defined function
 def my_func(x):
     return tf.sin(x[0]+x[1]+x[2]+x[3])
+
+MC = ZMCintegral.MCintegral(my_func,[[0,1],[0,2],[0,5],[0,0.6]])
 # obtaining the result
-result = ZMCintegral.MCintegral(my_func,[[0,1],[0,2],[0,5],[0,0.6]]).MCresult
+result = MC.evaluate()
 # print the formatted result
 print('result = %s    std = %s' % (result[0], result[1]))
 ```
@@ -55,7 +58,7 @@ import tensorflow as tf
 def my_func(x):
     tf.sin(x[0]+x[1]+x[2]+x[3]),x[0]+x[1]+x[2]+x[3],x[0]*x[1]*x[2]*x[3]
 # obtaining the result
-result = ZMCintegral.MCintegral(my_func,[[0,1],[0,2],[0,5],[0,0.6]]).MCresult
+result = ZMCintegral.MCintegral(my_func,[[0,1],[0,2],[0,5],[0,0.6]]).evaluate()
 # print the formatted result
 print('result = %s    std = %s' % (result[0], result[1]))
 ```
@@ -81,7 +84,30 @@ IF the resulted std is too large, one can try increasing num_trials.
 ###### example
 ```
 ZMCintegral.MCintegral(my_func,[[0,1],[0,2],[0,5],[0,0.6]],
-available_GPU=[0,1],num_trials=3,depth=3,sigma_multiplication=3).MCresult
+available_GPU=[0,1],num_trials=3,depth=3,sigma_multiplication=3).evaluate()
+```
+###### grid reconfiguration
+
+ZMCintegral supports the user to reconfigure the grid size and chunk size. eg:
+
+```
+import tensorflow as tf
+import ZMCintegral
+
+# user defined function
+def my_func(x):
+    return tf.sin(x[0]+x[1]+x[2]+x[3])
+
+MC = ZMCintegral.MCintegral(my_func,[[0,1],[0,2],[0,5],[0,0.6]])
+
+# reconfiguration of grid size and chunk size.
+MC.n_grid = 320**4
+MC.chunk_size = 64**4
+
+# obtaining the result
+result = MC.evaluate()
+# print the formatted result
+print('result = %s    std = %s' % (result[0], result[1]))
 ```
 
 License
