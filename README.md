@@ -32,16 +32,19 @@ Integration of the following expression:
 ```sh
 import ZMCintegral
 import tensorflow as tf
+
 # user defined function
 def my_func(x):
     return tf.sin(x[0]+x[1]+x[2]+x[3])
+    
 # obtaining the result
 result = ZMCintegral.MCintegral(my_func,[[0,1],[0,2],[0,5],[0,0.6]]).MCresult
+
 # print the formatted result
 print('result = %s    std = %s' % (result[0], result[1]))
 ```
 ZMCintegral returns:
-```
+```sh
 result = -1.0458884    std = 0.00041554452
 ```
 ### Advanced Usage
@@ -51,16 +54,19 @@ ZMCintegal supports the evaluation of several integrations simontaneously. For e
 ```sh
 import ZMCintegral
 import tensorflow as tf
+
 # user defined function
 def my_func(x):
-    tf.sin(x[0]+x[1]+x[2]+x[3]),x[0]+x[1]+x[2]+x[3],x[0]*x[1]*x[2]*x[3]
+    return tf.sin(x[0]+x[1]+x[2]+x[3]),x[0]+x[1]+x[2]+x[3],x[0]*x[1]*x[2]*x[3]
+    
 # obtaining the result
 result = ZMCintegral.MCintegral(my_func,[[0,1],[0,2],[0,5],[0,0.6]]).MCresult
+
 # print the formatted result
 print('result = %s    std = %s' % (result[0], result[1]))
 ```
 ZMCintegral returns:
-```
+```sh
 result = [-1.0458851 25.799936   2.249969 ]    std = [0.00040938 0.00066065 0.0002065 ]
 ```
 ###### tune parameters
@@ -79,7 +85,7 @@ IF the integration is really sharped, one can try increasing depth or decreasing
 IF the resulted std is too large, one can try increasing num_trials.
 
 ###### example
-```
+```sh
 ZMCintegral.MCintegral(my_func,[[0,1],[0,2],[0,5],[0,0.6]],
 available_GPU=[0,1],num_trials=3,depth=3,sigma_multiplication=3).MCresult
 ```
