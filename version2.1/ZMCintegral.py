@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[22]:
+# In[1]:
 
 
 '''
@@ -14,7 +14,7 @@ The program requires python tensorflow and numpy to be pre-installed in your
 GPU-supported computer. 
 
 '''
-ZMCIntegral_VERSION = '2.0'
+ZMCIntegral_VERSION = '2.1'
 
 import tensorflow as tf
 from tensorflow.python.eager.context import context, EAGER_MODE, GRAPH_MODE
@@ -102,19 +102,19 @@ class MCintegral():
     def importance_sampling_iteration(self, domain, depth):
         depth += 1
         MCresult_chunks, large_std_chunk_id, MCresult_std_chunks = self.MCevaluate(domain)
-        
         if depth < self.depth:
             for chunk_id in large_std_chunk_id:
                 # domain of this chunk
                 domain_next_level = self.chunk_domian(chunk_id, domain)
+                
                 # iteration
                 MCresult_chunks[chunk_id],MCresult_std_chunks[chunk_id] = self.importance_sampling_iteration(domain_next_level, depth)
         
         # Stop digging if there are no more large stddev chunk
         if len(large_std_chunk_id) == 0:
-            return np.sum(MCresult_chunks,0), np.sum(MCresult_std_chunks,0)
+            return np.sum(MCresult_chunks,0), np.sqrt(np.mean(MCresult_std_chunks**2,0))
 
-        return np.sum(MCresult_chunks,0), np.sum(MCresult_std_chunks,0)
+        return np.sum(MCresult_chunks,0), np.sqrt(np.mean(MCresult_std_chunks**2,0))
     
     def MCevaluate(self, domain):
 
@@ -202,41 +202,43 @@ class MCintegral():
         
         # get `total sampling number` and `sampling number in one chunk` depend on dimension of integral       
         if self.dim == 1:
-            self.n_grid = 65536*chunk_size_multiplier()
-            self.chunk_size = 65536
+            self.chunk_size_x = 65536
+            
         elif self.dim == 2:
-            self.n_grid = (4096*chunk_size_multiplier())**2
-            self.chunk_size = (4096)**2
+            self.chunk_size_x = 4096
+            
         elif self.dim == 3:
-            self.n_grid = (256*chunk_size_multiplier())**3
-            self.chunk_size = (256)**3
+            self.chunk_size_x = 256
+
         elif self.dim == 4:
-            self.n_grid = (64*chunk_size_multiplier())**4
-            self.chunk_size = (64)**4
+            self.chunk_size_x = 64
+            
         elif self.dim == 5:
-            self.n_grid = (24*chunk_size_multiplier())**5
-            self.chunk_size = (24)**5
+            self.chunk_size_x = 24
+            
         elif self.dim == 6:
-            self.n_grid = (10*chunk_size_multiplier())**6
-            self.chunk_size = (10)**6
+            self.chunk_size_x = 10
+            
         elif self.dim == 7:
-            self.n_grid = (8*chunk_size_multiplier())**7
-            self.chunk_size = (8)**7
+            self.chunk_size_x = 8
+            
         elif self.dim == 8:
-            self.n_grid = (6*chunk_size_multiplier())**8
-            self.chunk_size = (6)**8
+            self.chunk_size_x = 6
+            
         elif self.dim == 9:
-            self.n_grid = (5*chunk_size_multiplier())**9
-            self.chunk_size = (5)**9
+            self.chunk_size_x = 5
+            
         elif self.dim == 10:
-            self.n_grid = (4*chunk_size_multiplier())**10
-            self.chunk_size = (4)**10
+            self.chunk_size_x = 4
+            
         elif self.dim == 11:
-            self.n_grid = (3*chunk_size_multiplier())**11
-            self.chunk_size = (3)**11
+            self.chunk_size_x = 3
+            
         else:
-            self.n_grid = (2*chunk_size_multiplier())**self.dim
-            self.chunk_size = (2)**self.dim
+            self.chunk_size_x = 2
+        
+        self.chunk_size = self.chunk_size_x**self.dim
+        self.n_grid = (self.chunk_size_x*chunk_size_multiplier())**self.dim
         
     def configure_chunks(self):
         '''receieve self.dim, self.n_grid and self.chunk_size'''
