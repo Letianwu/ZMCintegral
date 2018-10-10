@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[3]:
 
 
 '''
@@ -106,7 +106,6 @@ class MCintegral():
             for chunk_id in large_std_chunk_id:
                 # domain of this chunk
                 domain_next_level = self.chunk_domian(chunk_id, domain)
-                
                 # iteration
                 MCresult_chunks[chunk_id],MCresult_std_chunks[chunk_id] = self.importance_sampling_iteration(domain_next_level, depth)
         
@@ -194,11 +193,9 @@ class MCintegral():
                 raise AssertionError("Domain is incorrect")
             if temp[1] < temp[0]:
                 raise AssertionError("Domain [a,b] should satisfy b>a")
+                
         # integrating dimension
         self.dim = len(domain)
-        
-        def chunk_size_multiplier(num_gpu = len(self.available_GPU)):
-            return int(math.floor((num_gpu*192)**(1/self.dim)))
         
         # get `total sampling number` and `sampling number in one chunk` depend on dimension of integral       
         if self.dim == 1:
@@ -237,8 +234,6 @@ class MCintegral():
         else:
             self.chunk_size_x = 2
         
-        self.chunk_size = self.chunk_size_x**self.dim
-        self.n_grid = (self.chunk_size_x*chunk_size_multiplier())**self.dim
         
     def configure_chunks(self):
         '''receieve self.dim, self.n_grid and self.chunk_size'''
@@ -247,7 +242,13 @@ class MCintegral():
             below, `int(np.round())` can make sure you got the exact number, 
             eg: in Python, you may get 7.99999 from 64^(1/2)
         '''
-
+        
+        def chunk_size_multiplier(num_gpu = len(self.available_GPU)):
+            return int(math.floor((num_gpu*192)**(1/self.dim)))
+        
+        self.chunk_size = self.chunk_size_x**self.dim
+        self.n_grid = (self.chunk_size_x*chunk_size_multiplier())**self.dim
+        
         # number of samplings in one chunk along one dimension
         self.n_grid_x_one_chunk = int(np.round(self.chunk_size**(1/self.dim)))
         
