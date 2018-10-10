@@ -90,10 +90,9 @@ class MCintegral():
         # initialize the preparing integrated function depend on its domain dimension
         self.initial(my_func, domain)
         
-        depth = 0
-        self.MCresult = self.importance_sampling_iteration(domain, depth)
+        self.MCresult = self.importance_sampling_iteration(domain)
         
-    def importance_sampling_iteration(self, domain, depth):
+    def importance_sampling_iteration(self, domain, depth = 0):
         depth += 1
         MCresult_chunks, large_std_chunk_id, MCresult_std_chunks = self.evaluate(domain)
         
@@ -102,7 +101,7 @@ class MCintegral():
                 # domain of this chunk
                 domain_next_level = self.chunk_domian(chunk_id, domain)
                 # iteration
-                MCresult_chunks[chunk_id],MCresult_std_chunks[chunk_id] = self.importance_sampling_iteration(domain_next_level, depth)
+                MCresult_chunks[chunk_id], MCresult_std_chunks[chunk_id] = self.importance_sampling_iteration(domain_next_level, depth)
         
         # Stop digging if there are no more large stddev chunk
         if len(large_std_chunk_id) == 0:
