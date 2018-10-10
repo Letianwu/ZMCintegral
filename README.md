@@ -21,6 +21,7 @@ To run ZMCintegral, the following packages needs to be pre-installed:
 
 Installation of ZMCintegral via Anaconda (https://www.anaconda.com) is also supported.
 In your specific environment, please use
+
 ```sh
 $ conda install ZMCintegral
 ```
@@ -48,7 +49,7 @@ print('result = %s    std = %s' % (result[0], result[1]))
 ```
 ZMCintegral returns:
 
-```
+```sh
 result = -1.0458884    std = 0.00041554452
 ```
 
@@ -74,7 +75,7 @@ print('result = %s    std = %s' % (result[0], result[1]))
 
 ZMCintegral returns:
 
-```
+```sh
 result = [-1.0458851 25.799936   2.249969 ]    std = [0.00040938 0.00066065 0.0002065 ]
 ```
 
@@ -95,7 +96,7 @@ IF the resulted std is too large, one can try increasing num_trials.
 
 ###### example
 
-```
+```sh
 ZMCintegral.MCintegral(my_func,[[0,1],[0,2],[0,5],[0,0.6]],
 available_GPU=[0,1],num_trials=3,depth=3,sigma_multiplication=3).evaluate()
 ```
@@ -104,7 +105,7 @@ available_GPU=[0,1],num_trials=3,depth=3,sigma_multiplication=3).evaluate()
 
 ZMCintegral supports the user to reconfigure the grid size and chunk size. eg:
 
-```
+```sh
 import tensorflow as tf
 import ZMCintegral
 
