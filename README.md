@@ -25,7 +25,7 @@ Installation of ZMCintegral via Anaconda (https://www.anaconda.com) is also supp
 In your specific environment, please use
 
 ```sh
-$ conda install ZMCintegral
+$ conda install -c zhang-junjie zmcintegral
 ```
 to install ZMC integral.
 
@@ -135,6 +135,26 @@ print('result = %s    std = %s' % (result[0], result[1]))
 ```
 #### Tip: when to change chunk_size_x?
 One can monitor the gpu utilization rate when eavalutaing the integration. If the utilization rate is really small, then one needs to consider increasing chunk_size_x at a cost of consuming more time resources.
+
+#### choosing other integration method
+ZMCintegral supports the integration of other methods as well. Now it supports 'AdaptiveImportanceMC' and 'AverageDigging'.
+###### example
+
+```sh
+# user defined function
+def my_func(x):
+    return tf.sin(x[0])
+
+MC = MCintegral(my_func,[[0,10]],method='AverageDigging')
+MC.chunk_size_x=30
+
+# obtaining the result
+result = MC.evaluate()
+
+# print the formatted result
+print('result = %s    std = %s' % (result[0], result[1]))
+```
+
 
 License
 ----
