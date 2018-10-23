@@ -9,7 +9,7 @@ setup(
     author_email='zjacob@mail.ustc.edu.cn',
     url='https://github.com/Letianwu/ZMCintegral',
     keywords=['Monte Carlo integraion','multi-gpu'],
-    install_requires=['tensorflow-gpu=1.10'],
+    install_requires=['tensorflow-gpu'],
     include_package_data=True,
     zip_safe=False,
     classifiers=[
