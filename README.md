@@ -10,6 +10,7 @@ It supports integrations with up to 11 multi-variables. It is capable of even mo
   - Multi-GPU device
   - Importance sampling
   - Heuristic tree search
+  - Choosing from different methods
 
 
 ###### To understand how ZMCintegral works, please refer to
