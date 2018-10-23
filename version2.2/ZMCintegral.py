@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[3]:
+# In[46]:
 
 
 '''
@@ -14,7 +14,7 @@ The program requires python tensorflow and numpy to be pre-installed in your
 GPU-supported computer. 
 
 '''
-ZMCIntegral_VERSION = '2.1'
+ZMCIntegral_VERSION = '2.2'
 
 import tensorflow as tf
 from tensorflow.python.eager.context import context, EAGER_MODE, GRAPH_MODE
@@ -39,7 +39,7 @@ def is_gpu_available(cuda_only = True):
 
 class MCintegral():
     
-    def __init__(self, my_func = None, domain = None, available_GPU = None, num_trials = 5, depth = 2, sigma_multiplication = 4):
+    def __init__(self, my_func = None, domain = None, available_GPU = None, num_trials = 5, depth = None, sigma_multiplication = 4,method=None):
 
         '''
         Parameters:
@@ -63,27 +63,48 @@ class MCintegral():
         # clean temp file
         self.clean_temp()
         
-        # check gpu condition
-        p = multiprocessing.Process(target = is_gpu_available)
-        p.daemon = True
-        p.start()
-        p.join()
-        
         if available_GPU == None:
+            # check gpu condition
+            p = multiprocessing.Process(target = is_gpu_available)
+            p.daemon = True
+            p.start()
+            p.join()
+            
             available_GPU = np.load(os.getcwd() + '/multi_temp/gpu_available.npy')
         
         if len(available_GPU) == 0:
             raise AssertionError("Your computer does not support GPU calculation.")
-        
-        # number of trials
-        self.num_trials = num_trials
             
-        # depth of the zooming search
-        self.depth = depth
+        if method == None or method == 'AdaptiveImportanceMC':
+        
+            # number of trials
+            self.num_trials = num_trials
+            
+            # depth of the zooming search
+            if depth==None:
+                self.depth = 2
+            else:
+                self.depth = depth
+             
+            self.method = 'AdaptiveImportanceMC'
+        
+        if method == 'AverageDigging':
+        
+            # number of trials
+            self.num_trials = 1
+            
+            # depth of the zooming search
+            if depth==None:
+                self.depth = 1
+            else:
+                self.depth = depth
+                
+            self.method='AverageDigging'
+        
         
         # recalculate the grid if `stddev` larger than `sigma_mean + sigma_multiplication * sigma`
         self.sigma_multiplication = sigma_multiplication
-            
+           
         # set up initial conditions
         self.available_GPU = available_GPU
 
@@ -156,12 +177,12 @@ class MCintegral():
         # find out the index of chunks that have very large stddev
         if len(np.shape(MCresult))==1:
             threshold = np.mean(MCresult_std) + self.sigma_multiplication * np.std(MCresult_std)
-            large_std_chunk_id = np.where(MCresult_std > threshold)[0]
+            large_std_chunk_id = np.where(MCresult_std >= threshold)[0]
             return MCresult, large_std_chunk_id, MCresult_std
         else:
             MCresult_std = np.transpose(MCresult_std)
             threshold = np.mean(MCresult_std,-1) + self.sigma_multiplication * np.std(MCresult_std,-1)
-            large_std_chunk_id = np.unique(np.concatenate([np.where(MCresult_std[i] > threshold[i])[0] for i in range(len(MCresult_std))]))
+            large_std_chunk_id = np.unique(np.concatenate([np.where(MCresult_std[i] >= threshold[i])[0] for i in range(len(MCresult_std))]))
             return MCresult, large_std_chunk_id, np.transpose(MCresult_std)
         
         
@@ -234,6 +255,7 @@ class MCintegral():
         else:
             self.chunk_size_x = 2
         
+        self.chunk_size_multiplier = int(math.floor((len(self.available_GPU)*192)**(1/self.dim)))
         
     def configure_chunks(self):
         '''receieve self.dim, self.n_grid and self.chunk_size'''
@@ -243,11 +265,8 @@ class MCintegral():
             eg: in Python, you may get 7.99999 from 64^(1/2)
         '''
         
-        def chunk_size_multiplier(num_gpu = len(self.available_GPU)):
-            return int(math.floor((num_gpu*192)**(1/self.dim)))
-        
         self.chunk_size = self.chunk_size_x**self.dim
-        self.n_grid = (self.chunk_size_x*chunk_size_multiplier())**self.dim
+        self.n_grid = (self.chunk_size_x*self.chunk_size_multiplier)**self.dim
         
         # number of samplings in one chunk along one dimension
         self.n_grid_x_one_chunk = int(np.round(self.chunk_size**(1/self.dim)))
@@ -332,9 +351,16 @@ class MCintegral():
                 domain_range = np.array([(domain[idim][1] - domain[idim][0]) / self.n_chunk_x for idim in range(self.dim)], dtype=np.float32)
                 domain_left = np.array([domain[idim][0] + chunk_id_d_dim[idim] * domain_range[idim] for idim in range(self.dim)], dtype=np.float32)
                     
-                # random variables of sampling points
-                random_domain_values = [tf.random_uniform([self.chunk_size], minval=domain_left[i_dim],                                                          maxval=domain_left[i_dim]+domain_range[i_dim],dtype=tf.float32)                                        for i_dim in range(self.dim)]
-            
+                if self.method=='AdaptiveImportanceMC':
+                    # random variables of sampling points
+                    random_domain_values = [tf.random_uniform([self.chunk_size], minval=domain_left[i_dim],                                                          maxval=domain_left[i_dim]+domain_range[i_dim],dtype=tf.float32)                                            for i_dim in range(self.dim)]
+                
+                elif self.method=='AverageDigging':
+                    # sampling specified points
+                    domain_temp = [tf.range(start=0,limit=self.chunk_size_x,delta=1,dtype=tf.float32)/self.chunk_size_x*domain_range[i_dim]                                            +domain_left[i_dim]+domain_range[i_dim]*0.5/(self.chunk_size_x)                                            for i_dim in range(self.dim)]
+                    meshed_domain = tf.meshgrid(*domain_temp)
+                    random_domain_values = [tf.reshape(meshed_domain[i_dim],[self.chunk_size,]) for i_dim in range(self.dim)]
+                    
                 # user defined function, tensor calculation
                 user_func = self.my_func(random_domain_values)
             
