@@ -108,7 +108,7 @@ available_GPU=[0,1],num_trials=3,depth=3,sigma_multiplication=3).evaluate()
 #### sampling points reconfiguration
 
 ZMCintegral configures the sampling points automatically, 
-but it also provides user reconfigure of number of sampling points, eg:
+but it also provides user-reconfigure of sampling points, eg:
 
 ```sh
 import tensorflow as tf
