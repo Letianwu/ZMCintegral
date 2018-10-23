@@ -56,7 +56,7 @@ result = -1.0458884    std = 0.00041554452
 ```
 
 ### Advanced Usage
-###### simontaneous evaluation
+#### simontaneous evaluation
 ZMCintegal supports the evaluation of several integrations simontaneously. For example, the following three:
 ![Image of expression 1](./examples/example02.png)
 
@@ -81,7 +81,7 @@ ZMCintegral returns:
 result = [-1.0458851 25.799936   2.249969 ]    std = [0.00040938 0.00066065 0.0002065 ]
 ```
 
-###### tuning parameters
+#### tuning parameters
 
 The following four parameters can be tuned to fit special cases.
 
@@ -93,7 +93,9 @@ The following four parameters can be tuned to fit special cases.
 | sigma_multiplication | For importance sampling. Only domains that have very large standardand deviations (hence, very unstable) should be magnified and re-evaluated. Domains which are beyond sigma_multiplication * &sigma; should be recalculated.|3|4|
 
 IF the integration is pretty normal, the default configuration is recomanded.
+
 IF the integration is really sharped, one can try increasing depth or decreasing sigma_multiplication.
+
 IF the resulted std is too large, one can try increasing num_trials.
 
 ###### example
@@ -103,7 +105,7 @@ ZMCintegral.MCintegral(my_func,[[0,1],[0,2],[0,5],[0,0.6]],
 available_GPU=[0,1],num_trials=3,depth=3,sigma_multiplication=3).evaluate()
 ```
 
-###### sampling points reconfiguration
+#### sampling points reconfiguration
 
 ZMCintegral configures the sampling points automatically, 
 but it also provides user reconfigure of number of sampling points, eg:
@@ -128,7 +130,7 @@ result = MC.evaluate()
 # print the formatted result
 print('result = %s    std = %s' % (result[0], result[1]))
 ```
-###### Tip: when to change chunk_size_x?
+#### Tip: when to change chunk_size_x?
 One can monitor the gpu utilization rate when eavalutaing the integration. If the utilization rate is really small, then one needs to consider increasing chunk_size_x at a cost of consuming more time resources.
 
 License
