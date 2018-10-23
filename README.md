@@ -1,13 +1,15 @@
 # ZMCintegral
 
 
-ZMCintegral is a python package which uses Monte Carlo Method to do numerical integrations on Multi-GPU devices. It supports integrations with up to 11 multi-variables. It is capable of even more than 11 variables if time is not of the priori concern. 
+ZMCintegral is an easy to use python package which supports Monte Carlo and Average Evaluation Method  to do numerical integrations on Multi-GPU devices. 
+It supports integrations with up to 11 multi-variables. It is capable of even more than 11 variables if time is not of the priori concern. It usually takes a few minutes to finish the task.
 
 # Supports
 
   - Multi-dimension integration
   - Multi-GPU device
   - Importance sampling
+  - Heuristic tree search
 
 
 ###### To understand how ZMCintegral works, please refer to
@@ -79,7 +81,7 @@ ZMCintegral returns:
 result = [-1.0458851 25.799936   2.249969 ]    std = [0.00040938 0.00066065 0.0002065 ]
 ```
 
-###### tune parameters
+###### tuning parameters
 
 The following four parameters can be tuned to fit special cases.
 
@@ -101,9 +103,10 @@ ZMCintegral.MCintegral(my_func,[[0,1],[0,2],[0,5],[0,0.6]],
 available_GPU=[0,1],num_trials=3,depth=3,sigma_multiplication=3).evaluate()
 ```
 
-###### grid reconfiguration
+###### sampling points reconfiguration
 
-ZMCintegral supports the user to reconfigure the chunk size. eg:
+ZMCintegral configures the sampling points automatically, 
+but it also provides user reconfigure of number of sampling points, eg:
 
 ```sh
 import tensorflow as tf
@@ -115,8 +118,9 @@ def my_func(x):
 
 MC = ZMCintegral.MCintegral(my_func,[[0,1],[0,2],[0,5],[0,0.6]])
 
-# reconfiguration of chunk size.
-MC.chunk_size_x = 64
+# total sampling points is equal to (chunk_size_x*chunk_size_multiplier)**dim, which is huge.
+MC.chunk_size_x = 30
+MC.chunk_size_multiplier = 3
 
 # obtaining the result
 result = MC.evaluate()
@@ -124,7 +128,7 @@ result = MC.evaluate()
 # print the formatted result
 print('result = %s    std = %s' % (result[0], result[1]))
 ```
-Tip: when to change chunk_size_x?
+###### Tip: when to change chunk_size_x?
 One can monitor the gpu utilization rate when eavalutaing the integration. If the utilization rate is really small, then one needs to consider increasing chunk_size_x at a cost of consuming more time resources.
 
 License
