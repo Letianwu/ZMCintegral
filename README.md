@@ -120,9 +120,12 @@ def my_func(x):
 
 MC = ZMCintegral.MCintegral(my_func,[[0,1],[0,2],[0,5],[0,0.6]])
 
+#############################################################################################
+# sampling points reconfiguration
 # total sampling points is equal to (chunk_size_x*chunk_size_multiplier)**dim, which is huge.
 MC.chunk_size_x = 30
 MC.chunk_size_multiplier = 3
+#############################################################################################
 
 # obtaining the result
 result = MC.evaluate()
