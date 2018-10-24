@@ -132,9 +132,9 @@ class MCintegral():
         
         # Stop digging if there are no more large stddev chunk
         if len(large_std_chunk_id) == 0:
-            return np.sum(MCresult_chunks,0), np.max(MCresult_std_chunks)
+            return np.sum(MCresult_chunks,0), np.sqrt(np.sum(MCresult_std_chunks**2))
 
-        return np.sum(MCresult_chunks,0), np.max(MCresult_std_chunks)
+        return np.sum(MCresult_chunks,0), np.sqrt(np.sum(MCresult_std_chunks**2))
     
     def MCevaluate(self, domain):
 
