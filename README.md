@@ -18,7 +18,7 @@ It supports integrations with up to 11 multi-variables. It is capable of even mo
 ### Installation
 
 To run ZMCintegral, the following packages needs to be pre-installed:
-  - Tensorflow 1.10+
+  - Tensorflow 1.10
   - Numpy
   - Math
 
@@ -28,7 +28,7 @@ In your specific environment, please use
 ```sh
 $ conda install -c zhang-junjie zmcintegral
 ```
-to install ZMC integral.
+to install ZMC integral, and make sure you have tensorflow-gpu 1.10 installed.
 
 ### Basic Example
 Integration of the following expression:
