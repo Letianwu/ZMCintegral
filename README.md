@@ -146,7 +146,7 @@ ZMCintegral supports the integration of other methods as well. Now it supports '
 def my_func(x):
     return tf.sin(x[0])
 
-MC = MCintegral(my_func,[[0,10]],method='AverageDigging')
+MC = ZMCintegral.MCintegral(my_func,[[0,10]],method='AverageDigging')
 MC.chunk_size_x=30
 
 # obtaining the result
