@@ -134,7 +134,7 @@ class MCintegral():
         if len(large_std_chunk_id) == 0:
             return np.sum(MCresult_chunks,0), np.sqrt(np.mean(MCresult_std_chunks**2,0))
 
-        return np.sum(MCresult_chunks,0), np.sqrt(np.mean(MCresult_std_chunks**2,0))
+        return np.sum(MCresult_chunks,0), np.max(MCresult_std_chunks)
     
     def MCevaluate(self, domain):
 
