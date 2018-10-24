@@ -36,7 +36,7 @@ Integration of the following expression:
 
 ```sh
 import tensorflow as tf
-import ZMCintegral
+from ZMCintegral import ZMCintegral
 
 # user defined function
 def my_func(x):
@@ -62,7 +62,7 @@ ZMCintegal supports the evaluation of several integrations simontaneously. For e
 ![Image of expression 1](./examples/example02.png)
 
 ```sh
-import ZMCintegral
+from ZMCintegral import ZMCintegral
 import tensorflow as tf
 
 # user defined function
@@ -113,7 +113,7 @@ but it also provides user-reconfigure of sampling points, eg:
 
 ```sh
 import tensorflow as tf
-import ZMCintegral
+from ZMCintegral import ZMCintegral
 
 # user defined function
 def my_func(x):
