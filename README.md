@@ -58,7 +58,8 @@ result = -1.0458884    std = 0.00041554452
 ```
 
 ## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) Advanced Usage
- - simontaneous evaluation
+#### - simontaneous evaluation
+
 ZMCintegal supports the evaluation of several integrations simontaneously. For example, the following three:
 ![Image of expression 1](./examples/example02.png)
 
@@ -83,7 +84,7 @@ ZMCintegral returns:
 result = [-1.0458851 25.799936   2.249969 ]    std = [0.00040938 0.00066065 0.0002065 ]
 ```
 
-#### tuning parameters
+#### - tuning parameters
 
 The following four parameters can be tuned to fit special cases.
 
@@ -96,8 +97,6 @@ The following four parameters can be tuned to fit special cases.
 
 IF the integration is pretty normal, the default configuration is recomanded.
 
-IF the integration is really sharped, one can try increasing depth or decreasing sigma_multiplication.
-
 IF the resulted std is too large, one can try increasing num_trials.
 
 For periodic integrands with many periods, one is recomanded to set **sigma_multiplication ~ -2.** 
@@ -106,14 +105,14 @@ For high peak integrands, one is recomanded to set **sigma_multiplication ~ +3.5
 
 The resons for these tips can be found here ??????????????
 
-###### example
+eg:
 
 ```sh
 ZMCintegral.MCintegral(my_func,[[0,1],[0,2],[0,5],[0,0.6]],
 available_GPU=[0,1],num_trials=3,depth=3,sigma_multiplication=3).evaluate()
 ```
 
-#### sampling points reconfiguration
+#### - sampling points reconfiguration
 
 ZMCintegral configures the sampling points automatically, 
 but it also provides user-reconfigure of sampling points, eg:
@@ -141,20 +140,26 @@ result = MC.evaluate()
 # print the formatted result
 print('result = %s    std = %s' % (result[0], result[1]))
 ```
-#### Tip: when to change chunk_size_x?
-One can monitor the gpu utilization rate when eavalutaing the integration. If the utilization rate is really small, then one needs to consider increasing chunk_size_x at a cost of consuming more time resources.
-```diff
-+ this will be highlighted in green
-- this will be highlighted in red
-```
-#### For periodic integrands with many periods, one is recomanded to set [sigma_multiplication ~ -2]. 
-#### For high peak integrands, one is recomanded to set [sigma_multiplication ~ +3.5] OR [a larger chunk_size_multiplier and smaller chunk_size_x]. 
-#### The resons for these tips can be found here ??????????????
+#### - Tip: when to change chunk_size_x?
 
-#### choosing other integration method
+One can monitor the gpu utilization rate when eavalutaing the integration. If the utilization rate is really small, then one needs to consider increasing chunk_size_x at a cost of consuming more time resources.
+
+In summary:
+
+IF the integration is pretty normal, the default configuration is recomanded.
+
+IF the resulted std is too large, one can try increasing num_trials.
+
+For periodic integrands with many periods, one is recomanded to set **sigma_multiplication ~ -2.** 
+
+For high peak integrands, one is recomanded to set **sigma_multiplication ~ +3.5, a larger chunk_size_multiplier and smaller chunk_size_x**.
+
+#### - choosing other integration method
 ZMCintegral supports the integration of other methods as well. Now it supports 'AdaptiveImportanceMC' and 'AverageDigging'.
+
 This method is especially stable for very rapid fluctuation integrands.
-###### example
+
+eg:
 
 ```sh
 # user defined function
