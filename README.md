@@ -95,16 +95,6 @@ The following four parameters can be tuned to fit special cases.
 | depth | For importance sampling. A domain is magnified for depth times. Better kept within 5. |3|2| 
 | sigma_multiplication | For importance sampling. Only domains that have very large standardand deviations (hence, very unstable) should be magnified and re-evaluated. Domains which are beyond sigma_multiplication * &sigma; should be recalculated.|3|4|
 
-IF the integration is pretty normal, the default configuration is recomanded.
-
-IF the resulted std is too large, one can try increasing num_trials.
-
-For periodic integrands with many periods, one is recomanded to set **sigma_multiplication ~ -2.** 
-
-For high peak integrands, one is recomanded to set **sigma_multiplication ~ +3.5, a larger chunk_size_multiplier and smaller chunk_size_x**.
-
-The resons for these tips can be found here ??????????????
-
 eg:
 
 ```sh
@@ -144,7 +134,7 @@ print('result = %s    std = %s' % (result[0], result[1]))
 
 One can monitor the gpu utilization rate when eavalutaing the integration. If the utilization rate is really small, then one needs to consider increasing chunk_size_x at a cost of consuming more time resources.
 
-In summary:
+#### - In summary:
 
 IF the integration is pretty normal, the default configuration is recomanded.
 
@@ -154,7 +144,7 @@ For periodic integrands with many periods, one is recomanded to set **sigma_mult
 
 For high peak integrands, one is recomanded to set **sigma_multiplication ~ +3.5, a larger chunk_size_multiplier and smaller chunk_size_x**.
 
-#### - choosing other integration method
+## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) choosing other integration method
 ZMCintegral supports the integration of other methods as well. Now it supports 'AdaptiveImportanceMC' and 'AverageDigging'.
 
 This method is especially stable for very rapid fluctuation integrands.
