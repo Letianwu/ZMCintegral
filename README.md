@@ -140,9 +140,9 @@ IF the integration is pretty normal, the default configuration is recomanded.
 
 IF the resulted std is too large, one can try increasing num_trials.
 
-For periodic integrands with many periods, one is recomanded to set **sigma_multiplication ~ -3.** 
+For periodic integrands with many periods, one is recomanded to set **sigma_multiplication --> -3 ~ -5.** 
 
-For high peak integrands, one is recomanded to set **sigma_multiplication ~ +3.5, a larger chunk_size_multiplier and smaller chunk_size_x**.
+For high peak integrands, one is recomanded to set **sigma_multiplication --> +3.5, a larger chunk_size_multiplier and smaller chunk_size_x**.
 
 ## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) choosing other integration method
 ZMCintegral supports the integration of other methods as well. Now it supports 'AdaptiveImportanceMC' and 'AverageDigging'.
