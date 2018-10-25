@@ -4,7 +4,7 @@ ZMCintegral is an easy to use python package which now supports both Monte Carlo
 It supports integrations with up to 11 multi-variables, and it is capable of even more than 11 variables if time is not of the priori concern. 
 ZMCintegral usually takes a few minutes to finish the task.
 
-# ![#1589F0](https://placehold.it/15/1589F0/000000?text=+)Supports
+# ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) `Supports`
 
   - Multi-dimension integration
   - Multi-GPU device
@@ -15,7 +15,7 @@ ZMCintegral usually takes a few minutes to finish the task.
 > **To understand how ZMCintegral works, please refer to ????????????????????????**
 
 
-# ![#1589F0](https://placehold.it/15/1589F0/000000?text=+)Installation
+# ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) `Installation`
 
 To run ZMCintegral, the following packages needs to be pre-installed:
   - Tensorflow 1.10+
@@ -23,6 +23,7 @@ To run ZMCintegral, the following packages needs to be pre-installed:
   - Math
 
 Installation of ZMCintegral via Anaconda (https://anaconda.org/zhang-junjie/zmcintegral) is also supported.
+
 In your specific environment, please use
 
 ```sh
@@ -30,7 +31,7 @@ $ conda install -c zhang-junjie zmcintegral
 ```
 to install ZMC integral, and make sure you have tensorflow-gpu 1.10+ installed.
 
-# ![#1589F0](https://placehold.it/15/1589F0/000000?text=+)Basic Example
+# ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) `Basic Example`
 Integration of the following expression:
 ![Image of expression 1](./examples/example01.png)
 
@@ -56,8 +57,8 @@ ZMCintegral returns:
 result = -1.0458884    std = 0.00041554452
 ```
 
-# ![#1589F0](https://placehold.it/15/1589F0/000000?text=+)Advanced Usage
-#### simontaneous evaluation
+# ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) `Advanced Usage`
+ - ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) `simontaneous evaluation`
 ZMCintegal supports the evaluation of several integrations simontaneously. For example, the following three:
 ![Image of expression 1](./examples/example02.png)
 
@@ -99,9 +100,11 @@ IF the integration is really sharped, one can try increasing depth or decreasing
 
 IF the resulted std is too large, one can try increasing num_trials.
 
-#### For periodic integrands with many periods, one is recomanded to set [sigma_multiplication ~ -2] OR [a larger chunk_size_multiplier and smaller chunk_size_x]. 
-#### For high peak integrands, one is recomanded to set [sigma_multiplication ~ +3.5] OR [a larger chunk_size_multiplier and smaller chunk_size_x]. 
-#### The resons for these tips can be found here ??????????????
+For periodic integrands with many periods, one is recomanded to set **sigma_multiplication ~ -2.** 
+
+For high peak integrands, one is recomanded to set **sigma_multiplication ~ +3.5, a larger chunk_size_multiplier and smaller chunk_size_x**.
+
+The resons for these tips can be found here ??????????????
 
 ###### example
 
