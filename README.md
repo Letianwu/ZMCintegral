@@ -57,8 +57,8 @@ ZMCintegral returns:
 result = -1.0458884    std = 0.00041554452
 ```
 
-## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) `Advanced Usage`
- - ![#c5f015](https://placehold.it/15/c5f015/000000?text=+) `simontaneous evaluation`
+## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) Advanced Usage
+ - simontaneous evaluation
 ZMCintegal supports the evaluation of several integrations simontaneously. For example, the following three:
 ![Image of expression 1](./examples/example02.png)
 
