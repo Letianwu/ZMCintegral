@@ -167,7 +167,7 @@ print('result = %s    std = %s' % (result[0], result[1]))
 ```
 
 
-License
+## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) License
 ----
 
 The package is coded by ZHANG Junjie and checked by WU Hongzhong of University of Science and Technology of China.
