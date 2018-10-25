@@ -4,7 +4,7 @@ ZMCintegral is an easy to use python package which now supports both Monte Carlo
 It supports integrations with up to 11 multi-variables, and it is capable of even more than 11 variables if time is not of the priori concern. 
 ZMCintegral usually takes a few minutes to finish the task.
 
-## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) `Supports`
+## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) Supports
 
   - Multi-dimension integration
   - Multi-GPU device
@@ -15,7 +15,7 @@ ZMCintegral usually takes a few minutes to finish the task.
 > **To understand how ZMCintegral works, please refer to ????????????????????????**
 
 
-## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) `Installation`
+## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) Installation
 
 To run ZMCintegral, the following packages needs to be pre-installed:
   - Tensorflow 1.10+
@@ -31,7 +31,7 @@ $ conda install -c zhang-junjie zmcintegral
 ```
 to install ZMC integral, and make sure you have tensorflow-gpu 1.10+ installed.
 
-## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) `Basic Example`
+## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) Basic Example
 Integration of the following expression:
 ![Image of expression 1](./examples/example01.png)
 
