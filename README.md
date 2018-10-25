@@ -12,10 +12,8 @@ ZMCintegral usually takes a few minutes to finish the task.
   - Heuristic tree search
   - Choosing from different methods
 
+> **To understand how ZMCintegral works, please refer to ????????????????????????**
 
-```diff
-+ To understand how ZMCintegral works, please refer to ????????????????????????
-```
 
 # ![#1589F0](https://placehold.it/15/1589F0/000000?text=+)Installation
 
@@ -23,18 +21,16 @@ To run ZMCintegral, the following packages needs to be pre-installed:
   - Tensorflow 1.10+
   - Numpy
   - Math
-```diff
-+ Installation of ZMCintegral via Anaconda is also supported.
-+ In your specific environment, please use
-```
 
+Installation of ZMCintegral via Anaconda (https://anaconda.org/zhang-junjie/zmcintegral) is also supported.
+In your specific environment, please use
 
 ```sh
 $ conda install -c zhang-junjie zmcintegral
 ```
-to install ZMC integral, and make sure you have tensorflow-gpu 1.10 installed.
+to install ZMC integral, and make sure you have tensorflow-gpu 1.10+ installed.
 
-### Basic Example
+# ![#1589F0](https://placehold.it/15/1589F0/000000?text=+)Basic Example
 Integration of the following expression:
 ![Image of expression 1](./examples/example01.png)
 
@@ -60,7 +56,7 @@ ZMCintegral returns:
 result = -1.0458884    std = 0.00041554452
 ```
 
-### Advanced Usage
+# ![#1589F0](https://placehold.it/15/1589F0/000000?text=+)Advanced Usage
 #### simontaneous evaluation
 ZMCintegal supports the evaluation of several integrations simontaneously. For example, the following three:
 ![Image of expression 1](./examples/example02.png)
