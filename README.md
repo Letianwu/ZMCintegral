@@ -141,7 +141,8 @@ print('result = %s    std = %s' % (result[0], result[1]))
 #### Tip: when to change chunk_size_x?
 One can monitor the gpu utilization rate when eavalutaing the integration. If the utilization rate is really small, then one needs to consider increasing chunk_size_x at a cost of consuming more time resources.
 
-#### For periodic integrands with many periods, one is recomanded to set [sigma_multiplication ~ -2] OR [a larger chunk_size_multiplier and smaller chunk_size_x]. 
+![#1589F0](https://placehold.it/15/1589F0/000000?text=+) `#1589F0`
+#### For periodic integrands with many periods, one is recomanded to set [sigma_multiplication ~ -2]. 
 #### For high peak integrands, one is recomanded to set [sigma_multiplication ~ +3.5] OR [a larger chunk_size_multiplier and smaller chunk_size_x]. 
 #### The resons for these tips can be found here ??????????????
 
