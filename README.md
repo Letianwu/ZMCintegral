@@ -1,10 +1,10 @@
 # ZMCintegral
 
+ZMCintegral is an easy to use python package which now supports both Monte Carlo and Average Evaluation Method to do numerical integrations on Multi-GPU devices. 
+It supports integrations with up to 11 multi-variables, and it is capable of even more than 11 variables if time is not of the priori concern. 
+ZMCintegral usually takes a few minutes to finish the task.
 
-ZMCintegral is an easy to use python package which supports Monte Carlo and Average Evaluation Method  to do numerical integrations on Multi-GPU devices. 
-It supports integrations with up to 11 multi-variables. It is capable of even more than 11 variables if time is not of the priori concern. It usually takes a few minutes to finish the task.
-
-# Supports
+# ![#1589F0](https://placehold.it/15/1589F0/000000?text=+)Supports
 
   - Multi-dimension integration
   - Multi-GPU device
@@ -13,17 +13,21 @@ It supports integrations with up to 11 multi-variables. It is capable of even mo
   - Choosing from different methods
 
 
-###### To understand how ZMCintegral works, please refer to ????????????????????????
+```diff
++ To understand how ZMCintegral works, please refer to ????????????????????????
+```
 
-### Installation
+# ![#1589F0](https://placehold.it/15/1589F0/000000?text=+)Installation
 
 To run ZMCintegral, the following packages needs to be pre-installed:
-  - Tensorflow 1.10
+  - Tensorflow 1.10+
   - Numpy
   - Math
+```diff
++ Installation of ZMCintegral via Anaconda is also supported.
++ In your specific environment, please use
+```
 
-Installation of ZMCintegral via Anaconda (https://www.anaconda.com) is also supported.
-In your specific environment, please use
 
 ```sh
 $ conda install -c zhang-junjie zmcintegral
@@ -140,8 +144,10 @@ print('result = %s    std = %s' % (result[0], result[1]))
 ```
 #### Tip: when to change chunk_size_x?
 One can monitor the gpu utilization rate when eavalutaing the integration. If the utilization rate is really small, then one needs to consider increasing chunk_size_x at a cost of consuming more time resources.
-
-![#1589F0](https://placehold.it/15/1589F0/000000?text=+) `#1589F0`
+```diff
++ this will be highlighted in green
+- this will be highlighted in red
+```
 #### For periodic integrands with many periods, one is recomanded to set [sigma_multiplication ~ -2]. 
 #### For high peak integrands, one is recomanded to set [sigma_multiplication ~ +3.5] OR [a larger chunk_size_multiplier and smaller chunk_size_x]. 
 #### The resons for these tips can be found here ??????????????
