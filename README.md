@@ -28,7 +28,7 @@ Installation of ZMCintegral via Anaconda (https://anaconda.org/zhang-junjie/zmci
 In your specific environment, please use
 
 ```sh
-$ conda install -c zhang-junjie zmcintegral
+$ conda install -c zhang-junjie zmcintegral=3.0
 ```
 to install ZMC integral, and make sure you have Numba CUDA installed.
 
@@ -37,7 +37,7 @@ Integration of the following expression:
 ![Image of expression 1](./examples/example01.png)
 
 ```sh
-import tensorflow as tf
+from numba import cuda
 from ZMCintegral import ZMCintegral
 
 # user defined function
@@ -83,7 +83,7 @@ ZMCintegral configures the sampling points automatically,
 but it also provides user-reconfigure of sampling points, eg:
 
 ```sh
-import tensorflow as tf
+from numba import cuda
 from ZMCintegral import ZMCintegral
 
 # user defined function
