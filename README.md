@@ -1,16 +1,17 @@
 # ZMCintegral
 
-ZMCintegral is an easy to use python package which now supports both Monte Carlo and Average Evaluation Method to do numerical integrations on Multi-GPU devices. 
-It supports integrations with up to 11 multi-variables, and it is capable of even more than 11 variables if time is not of the priori concern. 
+ZMCintegral (Numba backened) is an easy to use python package which uses Monte Carlo Evaluation Method to do numerical integrations on Multi-GPU devices. 
+It supports integrations with up to 16 multi-variables, and it is capable of even more than 16 variables if time is not of the priori concern. 
 ZMCintegral usually takes a few minutes to finish the task.
 
-## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) Supports
+## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) Newest Features
 
+  - Full flexibility of user defined functions
   - Multi-dimension integration
-  - Multi-GPU device
-  - Importance sampling
+  - Multi-GPU supports
+  - Stratified sampling
   - Heuristic tree search
-  - Choosing from different methods
+  
 
 > **To understand how ZMCintegral works, please refer to ????????????????????????**
 
@@ -18,7 +19,7 @@ ZMCintegral usually takes a few minutes to finish the task.
 ## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) Installation
 
 To run ZMCintegral, the following packages needs to be pre-installed:
-  - Tensorflow 1.10+
+  - Numba
   - Numpy
   - Math
 
@@ -29,7 +30,7 @@ In your specific environment, please use
 ```sh
 $ conda install -c zhang-junjie zmcintegral
 ```
-to install ZMC integral, and make sure you have tensorflow-gpu 1.10+ installed.
+to install ZMC integral, and make sure you have Numba CUDA installed.
 
 ## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) Basic Example
 Integration of the following expression:
@@ -40,8 +41,9 @@ import tensorflow as tf
 from ZMCintegral import ZMCintegral
 
 # user defined function
+@cuda.jit(device=True)
 def my_func(x):
-    return tf.sin(x[0]+x[1]+x[2]+x[3])
+    return math.sin(x[0]+x[1]+x[2]+x[3])
 
 MC = ZMCintegral.MCintegral(my_func,[[0,1],[0,2],[0,5],[0,0.6]])
 
@@ -55,33 +57,6 @@ ZMCintegral returns:
 
 ```sh
 result = -1.0458884    std = 0.00041554452
-```
-
-## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) Advanced Usage
-#### - simontaneous evaluation
-
-ZMCintegal supports the evaluation of several integrations simontaneously. For example, the following three:
-![Image of expression 1](./examples/example02.png)
-
-```sh
-from ZMCintegral import ZMCintegral
-import tensorflow as tf
-
-# user defined function
-def my_func(x):
-    return tf.sin(x[0]+x[1]+x[2]+x[3]),x[0]+x[1]+x[2]+x[3],x[0]*x[1]*x[2]*x[3]
-    
-# obtaining the result
-result = ZMCintegral.MCintegral(my_func,[[0,1],[0,2],[0,5],[0,0.6]]).evaluate()
-
-# print the formatted result
-print('result = %s    std = %s' % (result[0], result[1]))
-```
-
-ZMCintegral returns:
-
-```sh
-result = [-1.0458851 25.799936   2.249969 ]    std = [0.00040938 0.00066065 0.0002065 ]
 ```
 
 #### - tuning parameters
@@ -112,15 +87,16 @@ import tensorflow as tf
 from ZMCintegral import ZMCintegral
 
 # user defined function
+@cuda.jit(device=True)
 def my_func(x):
-    return tf.sin(x[0]+x[1]+x[2]+x[3])
+    return math.sin(x[0]+x[1]+x[2]+x[3])
 
 MC = ZMCintegral.MCintegral(my_func,[[0,1],[0,2],[0,5],[0,0.6]])
 
 #############################################################################################
 # sampling points reconfiguration
 # total sampling points is equal to (chunk_size_x*chunk_size_multiplier)**dim, which is huge.
-MC.chunk_size_x = 30
+MC.chunk_size_x = 20
 MC.chunk_size_multiplier = 3
 #############################################################################################
 
@@ -130,41 +106,10 @@ result = MC.evaluate()
 # print the formatted result
 print('result = %s    std = %s' % (result[0], result[1]))
 ```
-#### - Tip: when to change chunk_size_x?
 
-One can monitor the gpu utilization rate when eavalutaing the integration. If the utilization rate is really small, then one needs to consider increasing chunk_size_x at a cost of consuming more time resources.
+#### - Tip: when to change chunk_size_x and chunk_size_multiplier?
 
-#### - In summary:
-
-IF the integration is pretty normal, the default configuration is recomanded.
-
-IF the resulted std is too large, one can try increasing num_trials.
-
-For periodic integrands with many periods, one is recomanded to set **sigma_multiplication --> -3 ~ -5.** 
-
-For high peak integrands, one is recomanded to set **sigma_multiplication --> +3.5, a larger chunk_size_multiplier and smaller chunk_size_x**.
-
-## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) choosing other integration method
-ZMCintegral supports the integration of other methods as well. Now it supports 'AdaptiveImportanceMC' and 'AverageDigging'.
-
-This method is especially stable for very rapid fluctuation integrands.
-
-eg:
-
-```sh
-# user defined function
-def my_func(x):
-    return tf.sin(x[0])
-
-MC = ZMCintegral.MCintegral(my_func,[[0,10]],method='AverageDigging')
-MC.chunk_size_x=30
-
-# obtaining the result
-result = MC.evaluate()
-
-# print the formatted result
-print('result = %s    std = %s' % (result[0], result[1]))
-```
+If user want more points to be sampled, he/she can increase chunk_size_x and chunk_size_multiplier. **chunk_size_x * chunk_size_multiplier** equals the number of points in each dimension.
 
 
 ## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) License
