@@ -13,7 +13,7 @@ ZMCintegral usually takes a few minutes to finish the task.
   - Heuristic tree search
   
 
-> **To understand how ZMCintegral works, please refer to ????????????????????????**
+> **To understand how ZMCintegral works, please refer to https://arxiv.org/pdf/1902.07916.pdf**
 
 
 ## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) Installation
