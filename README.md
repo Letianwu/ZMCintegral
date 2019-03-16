@@ -37,6 +37,7 @@ Integration of the following expression:
 ![Image of expression 1](./examples/example01.png)
 
 ```sh
+import math
 from numba import cuda
 from ZMCintegral import ZMCintegral
 
@@ -46,6 +47,10 @@ def my_func(x):
     return math.sin(x[0]+x[1]+x[2]+x[3])
 
 MC = ZMCintegral.MCintegral(my_func,[[0,1],[0,2],[0,5],[0,0.6]])
+
+MC.depth = 2
+MC.sigma_multiplication = 5
+MC.num_trials = 5
 
 # obtaining the result
 result = MC.evaluate()
@@ -83,6 +88,7 @@ ZMCintegral configures the sampling points automatically,
 but it also provides user-reconfigure of sampling points, eg:
 
 ```sh
+import math
 from numba import cuda
 from ZMCintegral import ZMCintegral
 
