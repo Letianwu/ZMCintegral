@@ -20,8 +20,14 @@ ZMCintegral usually takes a few minutes to finish the task.
 
 To run ZMCintegral, the following packages needs to be pre-installed:
   - Numba
+  - cudatookit
   - Numpy
   - Math
+```
+$: conda install numpy
+$: conda install numba
+$: conda install cudatookit
+```
 
 Installation of ZMCintegral via Anaconda (https://anaconda.org/zhang-junjie/zmcintegral) is also supported.
 
