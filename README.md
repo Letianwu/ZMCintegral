@@ -15,18 +15,18 @@ ZMCintegral usually takes a few minutes to finish the task.
 
 > **To understand how ZMCintegral works, please refer to https://arxiv.org/pdf/1902.07916.pdf**
 
-
 ## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) Installation
 
 To run ZMCintegral, the following packages needs to be pre-installed:
   - Numba
-  - cudatookit
+  - cudatoolkit
   - Numpy
   - Math
+  - llvmlite
 ```
 $: conda install numpy
 $: conda install numba
-$: conda install cudatookit
+$: conda install cudatoolkit
 ```
 
 Installation of ZMCintegral via Anaconda (https://anaconda.org/zhang-junjie/zmcintegral) is also supported.
@@ -122,6 +122,12 @@ print('result = %s    std = %s' % (result[0], result[1]))
 #### - Tip: when to change chunk_size_x and chunk_size_multiplier?
 
 If user want more points to be sampled, he/she can increase chunk_size_x and chunk_size_multiplier. **chunk_size_x * chunk_size_multiplier** equals the number of points in each dimension.
+
+## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) More Help
+
+**One should read the [documentation](https://numba.pydata.org/numba-doc/dev/cuda/index.html) for the Numba package's CUDA capabilities when trying to use this package.** ZMCintegral is only compatible with device functions as Numba does not support dynamic parallelism. This is important when designing the integrated function.
+
+Issues with CUDA should first be resolved by looking at the [CUDA documentation](https://docs.nvidia.com/cuda/index.html).
 
 
 ## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) License
