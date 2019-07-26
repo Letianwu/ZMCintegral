@@ -52,6 +52,19 @@ The following four parameters can be tuned to fit special cases.
 | num_chunks_in_one_dimension     | The number of chunks users want to set along one dimension | 10 | 4 |
 | sigma_multiplier | Only domains that have very large standardand deviations (hence, very unstable) should be magnified and re-evaluated. Domains which are beyond sigma_multiplication * &sigma; should be recalculated.|3|4|
 
+#### Attention
+The user defined function must be organized in string format as shown in the following example. And the function name in the string mutst be `fun`, something like:
+```
+# user defined function
+fun = """ 
+import math
+# define a device function that should be used by cuda kernel
+@cuda.jit(device=True)
+def fun(x): # here the function name must be set as `fun`
+    return xxx
+"""
+```
+
 #### examples:
 ```
 import time
