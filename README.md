@@ -13,15 +13,21 @@ ZMCintegral usually takes a few minutes to finish the task.
   - Heuristic tree search
   
 
-> **To understand how ZMCintegral works, please refer to ????????????????????????**
-
+> **To understand how ZMCintegral works, please refer to https://arxiv.org/pdf/1902.07916.pdf**
 
 ## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) Installation
 
 To run ZMCintegral, the following packages needs to be pre-installed:
   - Numba
+  - cudatoolkit
   - Numpy
   - Math
+  - llvmlite
+```
+$: conda install numpy
+$: conda install numba
+$: conda install cudatoolkit
+```
 
 Installation of ZMCintegral via Anaconda (https://anaconda.org/zhang-junjie/zmcintegral) is also supported.
 
@@ -37,6 +43,7 @@ Integration of the following expression:
 ![Image of expression 1](./examples/example01.png)
 
 ```sh
+import math
 from numba import cuda
 from ZMCintegral import ZMCintegral
 
@@ -46,6 +53,10 @@ def my_func(x):
     return math.sin(x[0]+x[1]+x[2]+x[3])
 
 MC = ZMCintegral.MCintegral(my_func,[[0,1],[0,2],[0,5],[0,0.6]])
+
+MC.depth = 2
+MC.sigma_multiplication = 5
+MC.num_trials = 5
 
 # obtaining the result
 result = MC.evaluate()
@@ -83,6 +94,7 @@ ZMCintegral configures the sampling points automatically,
 but it also provides user-reconfigure of sampling points, eg:
 
 ```sh
+import math
 from numba import cuda
 from ZMCintegral import ZMCintegral
 
@@ -110,6 +122,12 @@ print('result = %s    std = %s' % (result[0], result[1]))
 #### - Tip: when to change chunk_size_x and chunk_size_multiplier?
 
 If user want more points to be sampled, he/she can increase chunk_size_x and chunk_size_multiplier. **chunk_size_x * chunk_size_multiplier** equals the number of points in each dimension.
+
+## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) More Help
+
+**One should read the [documentation](https://numba.pydata.org/numba-doc/dev/cuda/index.html) for the Numba package's CUDA capabilities when trying to use this package.** ZMCintegral is only compatible with device functions as Numba does not support dynamic parallelism. This is important when designing the integrated function.
+
+Issues with CUDA should first be resolved by looking at the [CUDA documentation](https://docs.nvidia.com/cuda/index.html).
 
 
 ## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) License
