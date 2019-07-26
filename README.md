@@ -17,8 +17,9 @@ ZMCintegral usually takes a few minutes to finish the task.
 
 ## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) Installation
 
-To run ZMCintegral, the following packages needs to be pre-installed:
+To run ZMCintegral (Numba-Ray version), the following packages needs to be pre-installed:
   - Numba
+  - Ray
   - cudatoolkit
   - Numpy
   - Math
@@ -27,48 +28,18 @@ To run ZMCintegral, the following packages needs to be pre-installed:
 $: conda install numpy
 $: conda install numba
 $: conda install cudatoolkit
+$: pip install ray
 ```
 
-Installation of ZMCintegral via Anaconda (https://anaconda.org/zhang-junjie/zmcintegral) is also supported.
-
-In your specific environment, please use
-
-```sh
-$ conda install -c zhang-junjie zmcintegral=3.0
+#### How to use the package
+First of all, prepare machines with Nvidia GPU devices. choose one of them as a head node:
 ```
-to install ZMC integral, and make sure you have Numba CUDA installed.
-
-## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) Basic Example
-Integration of the following expression:
-![Image of expression 1](./examples/example01.png)
-
-```sh
-import math
-from numba import cuda
-from ZMCintegral import ZMCintegral
-
-# user defined function
-@cuda.jit(device=True)
-def my_func(x):
-    return math.sin(x[0]+x[1]+x[2]+x[3])
-
-MC = ZMCintegral.MCintegral(my_func,[[0,1],[0,2],[0,5],[0,0.6]])
-
-MC.depth = 2
-MC.sigma_multiplication = 5
-MC.num_trials = 5
-
-# obtaining the result
-result = MC.evaluate()
-
-# print the formatted result
-print('result = %s    std = %s' % (result[0], result[1]))
+# for head node
+$: ray start --head --redis-port=6789 --num-cpus=10 --num-gpus=4
+#for other nodes, here the redis-address is the ip of head node.
+$: ray start --redis-address=210.45.78.43:6789 --num-cpus=5 --num-gpus=2
 ```
-ZMCintegral returns:
-
-```sh
-result = -1.0458884    std = 0.00041554452
-```
+After that, you can try the Numba-Ray version of ZMCintegral.
 
 #### - tuning parameters
 
@@ -76,52 +47,60 @@ The following four parameters can be tuned to fit special cases.
 
 | parameter        | usage           | example           | default  |
 |:-------------:|:-------------:|:-------------:|:-----:|
-| available_GPU    | Specify gpu used in calculation. | [0,1] | ALL GPUs detected |
 | num_trials     | Evaluate the integration for num_trials times. Better kept within 10. | 10 | 5 |
-| depth | For importance sampling. A domain is magnified for depth times. Better kept within 3. |3|2| 
-| sigma_multiplication | Only domains that have very large standardand deviations (hence, very unstable) should be magnified and re-evaluated. Domains which are beyond sigma_multiplication * &sigma; should be recalculated.|3|4|
+| depth | For importance sampling. A domain is magnified for depth times. Better kept within 3. |3|2|
+| num_chunks_in_one_dimension     | The number of chunks users want to set along one dimension | 10 | 4 |
+| sigma_multiplier | Only domains that have very large standardand deviations (hence, very unstable) should be magnified and re-evaluated. Domains which are beyond sigma_multiplication * &sigma; should be recalculated.|3|4|
 
-eg:
-
-```sh
-ZMCintegral.MCintegral(my_func,[[0,1],[0,2],[0,5],[0,0.6]],
-available_GPU=[0,1],num_trials=3,depth=3,sigma_multiplication=3).evaluate()
+#### examples:
 ```
-
-#### - sampling points reconfiguration
-
-ZMCintegral configures the sampling points automatically, 
-but it also provides user-reconfigure of sampling points, eg:
-
-```sh
-import math
-from numba import cuda
-from ZMCintegral import ZMCintegral
-
+import time
+a=time.time()
 # user defined function
+fun = """ 
+import math
+# define a device function that should be used by cuda kernel
 @cuda.jit(device=True)
-def my_func(x):
-    return math.sin(x[0]+x[1]+x[2]+x[3])
+def fun(x):
+    return math.sin(x[0]+x[1]+x[2]+x[3]+x[4]+x[5]+x[6])
+"""
+depth = 1
+sigma_multiplier = 5
+num_trials = 5
+num_chunks_in_one_dimension = 12
 
-MC = ZMCintegral.MCintegral(my_func,[[0,1],[0,2],[0,5],[0,0.6]])
-
-#############################################################################################
-# sampling points reconfiguration
-# total sampling points is equal to (chunk_size_x*chunk_size_multiplier)**dim, which is huge.
-MC.chunk_size_x = 20
-MC.chunk_size_multiplier = 3
-#############################################################################################
+MC = MCintegral(my_func = fun, domain = [[0,10],[0,10],[0,10],[0,10],[0,10],[0,10]], head_node_address = "210.45.78.43:6789",
+                depth = depth, sigma_multiplier = sigma_multiplier, num_trials = num_trials,
+                num_chunks_in_one_dimension = num_chunks_in_one_dimension)
 
 # obtaining the result
 result = MC.evaluate()
 
 # print the formatted result
 print('result = %s    std = %s' % (result[0], result[1]))
+print(time.time()-a)
+
+output:
+total number of GPUs:  4
+(pid=28535) current batch: 3, trial number: 5
+(pid=28536) current batch: 1, trial number: 5
+(pid=28537) current batch: 2, trial number: 5
+(pid=28538) current batch: 0, trial number: 5
+(pid=28535) current batch: 4, trial number: 5
+(pid=28536) current batch: 5, trial number: 5
+(pid=28537) current batch: 6, trial number: 5
+(pid=28538) current batch: 7, trial number: 5
+(pid=28536) current batch: 9, trial number: 5
+(pid=28535) current batch: 8, trial number: 5
+(pid=28537) current batch: 10, trial number: 5
+(pid=28538) current batch: 11, trial number: 5
+(pid=28536) current batch: 12, trial number: 5
+(pid=28535) current batch: 13, trial number: 5
+(pid=28537) current batch: 14, trial number: 5
+137 hypercube(s) need(s) to be recalculated, to save time, try increasing sigma_multiplier.
+result = -48.473634536766795    std = 1.9871465878803765
+38.989293813705444
 ```
-
-#### - Tip: when to change chunk_size_x and chunk_size_multiplier?
-
-If user want more points to be sampled, he/she can increase chunk_size_x and chunk_size_multiplier. **chunk_size_x * chunk_size_multiplier** equals the number of points in each dimension.
 
 ## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) More Help
 
@@ -133,7 +112,7 @@ Issues with CUDA should first be resolved by looking at the [CUDA documentation]
 ## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) License
 ----
 
-The package is coded by ZHANG Junjie and checked by WU Hongzhong of University of Science and Technology of China.
+The package is coded by Jun-Jie Zhang and checked by Hong-Zhong Wu of University of Science and Technology of China.
 
 **This package is free**
 you can redistribute it and/or modify it under the terms of 
