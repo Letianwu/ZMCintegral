@@ -31,21 +31,17 @@ To run ZMCintegral (Numba-Ray version), the following packages needs to be pre-i
   - Numba
   - Ray
   - cudatoolkit
-  - Numpy
-  - Math
-  - llvmlite
 ```
-$: conda install numpy
 $: conda install numba
-$: conda install cudatoolkit
-$: pip install -U ray[debug]
+$: conda install cudatoolkit (make sure it is compatable with your driver verison)
+$: pip install -U ray==0.7.1
 ```
 ZMCintegral can be installed simply via
 ```
 $: pip install ZMCintegral
 ```
 
-#### How to use the package
+#### Prepare for running ZMCintegral
 First of all, prepare machines with Nvidia GPU devices. choose one of them as a head node:
 ```
 # for head node
@@ -53,7 +49,9 @@ $: ray start --head --redis-port=6789 --num-cpus=10 --num-gpus=4
 #for other nodes, here the redis-address is the ip of head node.
 $: ray start --redis-address=210.45.78.43:6789 --num-cpus=5 --num-gpus=2
 ```
-After that, you can try ZMCintegral.
+
+## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) Basic examples
+
 
 #### - tuning parameters
 
