@@ -217,8 +217,24 @@ The package is coded by Jun-Jie Zhang and checked by Hong-Zhong Wu of University
 you can redistribute it and/or modify it under the terms of 
 the Apache License Version 2.0, January 2004 (http://www.apache.org/licenses/).
 
-
-
+**File Structure**
+```
+ZMCintegral
+│   README.md 
+│   LICENSE
+│   setup.py 
+│
+└───ZMC
+│   │   ZMCintegral_functional.py
+│   │   ZMCintegral_normal.py
+│   │   __init__.py
+│
+└───pics
+    │   sin6d.PNG 
+    │   sin6d_theoretical.PNG 
+	│   parameter integration.PNG
+	│   parameter integration theoretical.PNG
+```
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
 
