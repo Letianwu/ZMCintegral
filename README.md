@@ -31,9 +31,6 @@ To run ZMCintegral (Numba-Ray version), the following packages needs to be pre-i
   - Numba
   - Ray
   - cudatoolkit
-  - Numpy
-  - Math
-  - llvmlite
 ```
 $: conda install numpy
 $: conda install numba
