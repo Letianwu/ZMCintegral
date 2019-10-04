@@ -50,7 +50,9 @@ $: ray start --head --redis-port=6789 --num-cpus=10 --num-gpus=4
 $: ray start --redis-address=210.45.78.43:6789 --num-cpus=5 --num-gpus=2
 ```
 
-#### Basic 
+## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) Basic examples
+
+
 #### - tuning parameters
 
 The following four parameters can be tuned to fit special cases.
