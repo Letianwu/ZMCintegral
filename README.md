@@ -22,9 +22,6 @@ ZMCintegral usually takes a few minutes to finish the task.
   - Heuristic tree search
   - Parameter grid search
   
-
-
-
 ## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) Installation
 
 To run ZMCintegral (Numba-Ray version), the following packages needs to be pre-installed:
@@ -50,10 +47,137 @@ $: ray start --head --redis-port=6789 --num-cpus=10 --num-gpus=4
 $: ray start --redis-address=210.45.78.43:6789 --num-cpus=5 --num-gpus=2
 ```
 
-## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) Basic examples
+## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) Integration of 6-dimensionals
+
+#### The integration is of the form
+
+![An image](./pics/sin6d.PNG) <!-- .element height="20%" width="20%" -->
+
+#### whose result can be obtained via
 
 
-#### - tuning parameters
+![Image of expression 1](./pics/sin6d_theoretical.PNG)
+
+#### In ZMCintegral this is done via
+
+```
+from ZMC.ZMCintegral_normal import MCintegral_normal
+import math
+import numpy as np
+
+import time
+start = time.time()
+
+# user defined function
+fun = """ 
+import math
+# define a device function that should be used by cuda kernel
+@cuda.jit(device=True)
+def fun(x):
+    return math.sin(x[0]+x[1]+x[2]+x[3]+x[4]+x[5]+x[6])
+"""
+
+# define arguments that MCintegral_normal requires
+depth = 1
+sigma_multiplier = 5
+num_trials = 5
+num_chunks_in_one_dimension = 12
+
+# call MCintegral_normal
+MC = MCintegral_normal(my_func = fun, 
+                       domain = [[0,10],[0,10],[0,10],[0,10],[0,10],[0,10]], 
+                       head_node_address = "210.45.78.19:1234",
+                       depth = depth, 
+                       sigma_multiplier = sigma_multiplier, 
+                       num_trials = num_trials,
+                       num_chunks_in_one_dimension = num_chunks_in_one_dimension)
+
+
+# obtaining the result
+result = MC.evaluate()
+
+
+# print the formatted result
+print('result = %s    std = %s' % (result[0], result[1]))
+print('evaluation time {}'.format(time.time()-start))
+```
+#### The output is
+
+```
+total number of GPUs:  1
+140 hypercube(s) need(s) to be recalculated, to save time, try increasing sigma_multiplier.
+result = -49.47563512703137    std = 1.9873890591413763
+evaluation time 37.8058066368103
+```
+
+## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) Integration of 4-dimensionals with parameters
+
+#### The integration is of the form
+
+![Image of expression 1](./pics/parameter%20integration.PNG)
+
+#### wohse results can be obtained via
+
+![Image of expression 1](./pics/parameter%20integration%20theoretical.PNG)
+
+#### In ZMCintegral this is done via
+
+```
+from ZMC.ZMCintegral_functional import MCintegral_functional
+import math
+import numpy as np
+
+import time
+start = time.time()
+
+
+# user defined function
+fun = """ 
+import math
+# define a device function that should be used by cuda kernel
+@cuda.jit(device=True)
+def fun(x,para):
+    return math.sin(x[0]+x[1]+x[2]+x[3]+para[0]+para[1])
+"""
+
+# para contains two parameters
+para = [[1,2,3,4,5],[1.1,2.2,3.1]]
+
+
+# sample points is taken to 10**6
+sample_points = 10**6
+
+# the parameter grid has totally 5*3=15 points
+# we choose 3 batches as an example
+batch_size = 5
+
+# call MCintegral_functional
+MC = MCintegral_functional(my_func = fun, 
+                           domain = [[0,1],[0,1],[0,1],[0,1]], 
+                           parameters = para, 
+                           head_node_address = "210.45.78.19:1234",
+                           num_points = sample_points, 
+                           batch_size = batch_size)
+
+# obtaining the result
+result = MC.evaluate()
+result = print(np.reshape(result,[3,5]))
+print('evaluation time {}'.format(time.time()-start))
+
+```
+#### The output is (which can be conpared with Mathematica's results)
+```
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+Detected total number of GPUs: 1
+Total parameter grid size: 15, Each GPU cycle will cover 5 grid values, Total GPU cycles: 3
+Evaluating, please wait...
+[[-0.64027657 -0.81054914 -0.23614549  0.55573641  0.83644859]
+ [-0.8100885  -0.23610632  0.55550291  0.83625073  0.34960498]
+ [-0.23645369  0.55572789  0.83633015  0.34781143 -0.45968675]]
+evaluation time 4.728282690048218
+```
+
+## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) - tuning parameters
 
 The following four parameters can be tuned to fit special cases.
 
@@ -75,56 +199,6 @@ import math
 def fun(x): # here the function name must be set as `fun`
     return xxx
 """
-```
-
-#### examples:
-```
-import time
-a=time.time()
-# user defined function
-fun = """ 
-import math
-# define a device function that should be used by cuda kernel
-@cuda.jit(device=True)
-def fun(x):
-    return math.sin(x[0]+x[1]+x[2]+x[3]+x[4]+x[5]+x[6])
-"""
-depth = 1
-sigma_multiplier = 5
-num_trials = 5
-num_chunks_in_one_dimension = 12
-
-MC = MCintegral(my_func = fun, domain = [[0,10],[0,10],[0,10],[0,10],[0,10],[0,10]], head_node_address = "210.45.78.43:6789",
-                depth = depth, sigma_multiplier = sigma_multiplier, num_trials = num_trials,
-                num_chunks_in_one_dimension = num_chunks_in_one_dimension)
-
-# obtaining the result
-result = MC.evaluate()
-
-# print the formatted result
-print('result = %s    std = %s' % (result[0], result[1]))
-print(time.time()-a)
-
-output:
-total number of GPUs:  4
-(pid=28535) current batch: 3, trial number: 5
-(pid=28536) current batch: 1, trial number: 5
-(pid=28537) current batch: 2, trial number: 5
-(pid=28538) current batch: 0, trial number: 5
-(pid=28535) current batch: 4, trial number: 5
-(pid=28536) current batch: 5, trial number: 5
-(pid=28537) current batch: 6, trial number: 5
-(pid=28538) current batch: 7, trial number: 5
-(pid=28536) current batch: 9, trial number: 5
-(pid=28535) current batch: 8, trial number: 5
-(pid=28537) current batch: 10, trial number: 5
-(pid=28538) current batch: 11, trial number: 5
-(pid=28536) current batch: 12, trial number: 5
-(pid=28535) current batch: 13, trial number: 5
-(pid=28537) current batch: 14, trial number: 5
-137 hypercube(s) need(s) to be recalculated, to save time, try increasing sigma_multiplier.
-result = -48.473634536766795    std = 1.9871465878803765
-38.989293813705444
 ```
 
 ## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) More Help
