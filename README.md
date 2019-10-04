@@ -2,6 +2,15 @@
 
 ZMCintegral (Numba backened) is an easy to use python package which uses Monte Carlo Evaluation Method to do numerical integrations on Multi-GPU devices. 
 It supports integrations with up to 16 multi-variables, and it is capable of even more than 16 variables if time is not of the priori concern. 
+
+> **To understand how ZMCintegral works, please refer to**
+
+  **https://arxiv.org/pdf/1902.07916v2.pdf**
+    
+> **This new version supports parameter grid search, for this new functionality please refer to**
+
+  **??????????**
+    
 ZMCintegral usually takes a few minutes to finish the task.
 
 ## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) Newest Features
@@ -11,9 +20,10 @@ ZMCintegral usually takes a few minutes to finish the task.
   - Multi-GPU supports
   - Stratified sampling
   - Heuristic tree search
+  - Parameter grid search
   
 
-> **To understand how ZMCintegral works, please refer to https://arxiv.org/pdf/1902.07916.pdf**
+
 
 ## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) Installation
 
@@ -28,7 +38,11 @@ To run ZMCintegral (Numba-Ray version), the following packages needs to be pre-i
 $: conda install numpy
 $: conda install numba
 $: conda install cudatoolkit
-$: pip install ray
+$: pip install -U ray[debug]
+```
+ZMCintegral can be installed simply via
+```
+$: pip install ZMCintegral
 ```
 
 #### How to use the package
@@ -39,7 +53,7 @@ $: ray start --head --redis-port=6789 --num-cpus=10 --num-gpus=4
 #for other nodes, here the redis-address is the ip of head node.
 $: ray start --redis-address=210.45.78.43:6789 --num-cpus=5 --num-gpus=2
 ```
-After that, you can try the Numba-Ray version of ZMCintegral.
+After that, you can try ZMCintegral.
 
 #### - tuning parameters
 
