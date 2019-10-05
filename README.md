@@ -30,12 +30,21 @@ To run ZMCintegral (Numba-Ray version), the following packages needs to be pre-i
   - cudatoolkit
 ```
 $: conda install numba
-$: conda install cudatoolkit (make sure it is compatable with your driver verison)
+$: conda install cudatoolkit (**notification)
 $: pip install -U ray==0.7.1
 ```
 ZMCintegral can be installed simply via
 ```
 $: pip install ZMCintegral
+```
+
+** notification
+
+make sure it is compatable with your driver verison, other wise you will get an error:
+```
+numba.cuda.cudadrv.driver.LinkerError: [218] Call to cuLinkAddData results in UNKNOWN_CUDA_ERROR
+ptxas application ptx input, line 9; fatal   : Unsupported .version 6.4; current version is '6.2'
+ptxas fatal   : Ptx assembly aborted due to errors
 ```
 
 #### Prepare for running ZMCintegral
