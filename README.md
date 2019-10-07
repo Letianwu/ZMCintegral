@@ -9,7 +9,7 @@ It supports integrations with up to 16 multi-variables, and it is capable of eve
     
 > **This new version supports parameter grid search, for this new functionality please refer to**
 
-  **??????????**
+  **https://arxiv.org/pdf/1910.01965.pdf**
     
 ZMCintegral usually takes a few minutes to finish the task.
 
