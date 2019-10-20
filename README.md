@@ -230,7 +230,9 @@ def fun(x): # here the function name must be set as `fun`
 Issues with CUDA should first be resolved by looking at the [CUDA documentation](https://docs.nvidia.com/cuda/index.html).
 
 For further questions and technical issues, please contact us at
+
 whz168@mail.ustc.edu.cn
+
 zjacob@mail.ustc.edu.cn
 
 
