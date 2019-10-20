@@ -31,7 +31,7 @@ To run ZMCintegral (Numba-Ray version), the following packages needs to be pre-i
 ```
 $: conda install numba
 $: conda install cudatoolkit (**notification)
-$: pip install -U ray==0.7.1
+$: pip install -U ray[debug]==0.7.1
 ```
 ZMCintegral can be installed simply via
 ```
