@@ -231,9 +231,9 @@ Issues with CUDA should first be resolved by looking at the [CUDA documentation]
 
 For further questions and technical issues, please contact us at
 
-whz168@mail.ustc.edu.cn
+whz168@mail.ustc.edu.cn (Hong-Zhong Wu 伍宏忠)
 
-zjacob@mail.ustc.edu.cn
+zjacob@mail.ustc.edu.cn (Jun-Jie Zhang 张俊杰)
 
 
 ## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) License
