@@ -56,6 +56,15 @@ $: ray start --head --redis-port=6789 --num-cpus=10 --num-gpus=4
 $: ray start --redis-address=210.45.78.43:6789 --num-cpus=5 --num-gpus=2
 ```
 
+Remeber to use
+```
+# for head node
+$: ray stop
+#for other nodes
+$: ray stop
+```
+after evaluation.
+
 ## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) Integration of 6-dimensionals
 
 #### The integration is of the form
