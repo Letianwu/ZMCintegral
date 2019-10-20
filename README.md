@@ -55,9 +55,9 @@ ptxas fatal   : Ptx assembly aborted due to errors
 First of all, prepare machines with Nvidia GPU devices. choose one of them as a head node:
 ```
 # for head node
-$: ray start --head --redis-port=6789 --num-cpus=10 --num-gpus=4
+$: ray start --head --redis-port=XXXX --num-cpus=10 --num-gpus=4
 #for other nodes, here the redis-address is the ip of head node.
-$: ray start --redis-address=210.45.78.43:6789 (replace it by your own address and port) --num-cpus=5 --num-gpus=2
+$: ray start --redis-address=XXX.XXX.XX.XX:XXXX --num-cpus=5 --num-gpus=2
 ```
 
 Remeber to use
@@ -108,7 +108,7 @@ num_chunks_in_one_dimension = 12
 # call MCintegral_normal
 MC = MCintegral_normal(my_func = fun, 
                        domain = [[0,10],[0,10],[0,10],[0,10],[0,10],[0,10]], 
-                       head_node_address = "210.45.78.19:1234 (replace it by your own address and port)",
+                       head_node_address = "XXX.XXX.XX.XX:XXXX",
                        depth = depth, 
                        sigma_multiplier = sigma_multiplier, 
                        num_trials = num_trials,
@@ -177,7 +177,7 @@ batch_size = 5
 MC = MCintegral_functional(my_func = fun, 
                            domain = [[0,1],[0,1],[0,1],[0,1]], 
                            parameters = para, 
-                           head_node_address = "210.45.78.19:1234 (replace it by your own address and port)",
+                           head_node_address = "XXX.XXX.XX.XX:XXXX",
                            num_points = sample_points, 
                            batch_size = batch_size)
 
