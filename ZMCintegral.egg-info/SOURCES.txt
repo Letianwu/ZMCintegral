@@ -1,6 +1,7 @@
 README.md
 setup.py
 ZMC/ZMCintegral_functional.py
+ZMC/ZMCintegral_multifunctions.py
 ZMC/ZMCintegral_normal.py
 ZMC/__init__.py
 ZMCintegral.egg-info/PKG-INFO

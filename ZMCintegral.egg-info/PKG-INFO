@@ -1,9 +1,9 @@
 Metadata-Version: 2.1
 Name: ZMCintegral
-Version: 5.0
+Version: 5.1
 Summary: An easy way to use multi-GPUs to calculate multi-dimensional integration
 Home-page: https://github.com/Letianwu/ZMCintegral
-Author: ZHANG Jun-Jie, WU Hong-Zhong
+Author: Cao Xiao-Yan, ZHANG Jun-Jie
 Author-email: zjacob@mail.ustc.edu.cn
 License: UNKNOWN
 Description: # ZMCintegral
@@ -17,7 +17,7 @@ Description: # ZMCintegral
             
         > **This new version supports parameter grid search, for this new functionality please refer to**
         
-          **??????????**
+          **https://arxiv.org/pdf/1910.01965.pdf**
             
         ZMCintegral usually takes a few minutes to finish the task.
         
@@ -29,6 +29,7 @@ Description: # ZMCintegral
           - Stratified sampling
           - Heuristic tree search
           - Parameter grid search
+          - very many functions
           
         ## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) Installation
         
@@ -37,23 +38,46 @@ Description: # ZMCintegral
           - Ray
           - cudatoolkit
         ```
-        $: conda install numba
-        $: conda install cudatoolkit (make sure it is compatable with your driver verison)
-        $: pip install -U ray==0.7.1
+        # create a new environment
+        $: conda create -n zmcintegral
+        
+        # install relavant package
+        $: conda install python=3.6
+        $: conda install numba=0.45.1
+        $: conda install cudatoolkit (**notification)
+        $: pip install -U ray[debug]==0.7.1
         ```
         ZMCintegral can be installed simply via
         ```
         $: pip install ZMCintegral
         ```
         
+        ** notification
+        
+        make sure it is compatable with your driver verison, other wise you will get an error:
+        ```
+        numba.cuda.cudadrv.driver.LinkerError: [218] Call to cuLinkAddData results in UNKNOWN_CUDA_ERROR
+        ptxas application ptx input, line 9; fatal   : Unsupported .version 6.4; current version is '6.2'
+        ptxas fatal   : Ptx assembly aborted due to errors
+        ```
+        
         #### Prepare for running ZMCintegral
         First of all, prepare machines with Nvidia GPU devices. choose one of them as a head node:
         ```
         # for head node
-        $: ray start --head --redis-port=6789 --num-cpus=10 --num-gpus=4
+        $: ray start --head --redis-port=XXXX --num-cpus=10 --num-gpus=4
         #for other nodes, here the redis-address is the ip of head node.
-        $: ray start --redis-address=210.45.78.43:6789 --num-cpus=5 --num-gpus=2
+        $: ray start --redis-address=XXX.XXX.XX.XX:XXXX --num-cpus=5 --num-gpus=2
         ```
+        
+        Remeber to use
+        ```
+        # for head node
+        $: ray stop
+        #for other nodes
+        $: ray stop
+        ```
+        after evaluation.
         
         ## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) Integration of 6-dimensionals
         
@@ -94,7 +118,7 @@ Description: # ZMCintegral
         # call MCintegral_normal
         MC = MCintegral_normal(my_func = fun, 
                                domain = [[0,10],[0,10],[0,10],[0,10],[0,10],[0,10]], 
-                               head_node_address = "210.45.78.19:1234",
+                               head_node_address = "XXX.XXX.XX.XX:XXXX",
                                depth = depth, 
                                sigma_multiplier = sigma_multiplier, 
                                num_trials = num_trials,
@@ -163,7 +187,7 @@ Description: # ZMCintegral
         MC = MCintegral_functional(my_func = fun, 
                                    domain = [[0,1],[0,1],[0,1],[0,1]], 
                                    parameters = para, 
-                                   head_node_address = "210.45.78.19:1234",
+                                   head_node_address = "XXX.XXX.XX.XX:XXXX",
                                    num_points = sample_points, 
                                    batch_size = batch_size)
         
@@ -173,7 +197,7 @@ Description: # ZMCintegral
         print('evaluation time {}'.format(time.time()-start))
         
         ```
-        #### The output is (which can be conpared with Mathematica's results)
+        #### The output is (which can be compared with Mathematica's results)
         ```
         <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         Detected total number of GPUs: 1
@@ -183,6 +207,51 @@ Description: # ZMCintegral
          [-0.8100885  -0.23610632  0.55550291  0.83625073  0.34960498]
          [-0.23645369  0.55572789  0.83633015  0.34781143 -0.45968675]]
         evaluation time 4.728282690048218
+        ```
+        
+        ## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) Very many integrations
+        
+        #### Suppose integration is of the form and results can be obtained via
+        ![Image of expression 1](./pics/multi-function.PNG)
+        
+        #### In ZMCintegral this is done via
+        ```
+        from ZMC.ZMCintegral_multifunctions import MCintegral_multi_function
+        import math
+        import numpy as np
+        
+        import time
+        start = time.time()
+        
+        # user defined function and domains
+        funs = ["math.sin(x[0]+x[1]+x[2]+x[3])*math.tan(x[0])",\
+                "math.cos(x[0]+x[1]+x[2]+x[3])"]
+        
+        domains = [[[0,1],[0,10],[0,1],[0,1]],\
+                   [[0,1],[0,10],[0,1],[0,1]]]
+        
+        # sample points is taken to 10**6
+        sample_points = 10**6
+        
+        # call MCintegral_functional
+        MC = MCintegral_multi_function(my_funcs = funs,
+                                       domains = domains,
+                                       head_node_address = "XXX.XXX.XXX.XXX:XXXX",
+                                       num_points = sample_points)
+        
+        # obtaining the result
+        result = MC.evaluate()
+        print('result {}'.format(np.array(result).flatten()))
+        print('evaluation time {:.4f} s'.format(time.time()-start))
+        ```
+        
+        #### The output is (which can be compared with Mathematica's results)
+        
+        ```
+        Detected total number of GPUs: 1
+        Evaluating, please wait...
+        result [-0.425192   -1.64925066]
+        evaluation time 0.9935 s
         ```
         
         ## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) - tuning parameters
@@ -215,6 +284,14 @@ Description: # ZMCintegral
         
         Issues with CUDA should first be resolved by looking at the [CUDA documentation](https://docs.nvidia.com/cuda/index.html).
         
+        For further questions and technical issues, please contact us at
+        
+        whz168@mail.ustc.edu.cn (Hong-Zhong Wu 伍宏忠)
+        
+        zjacob@mail.ustc.edu.cn (Jun-Jie Zhang 张俊杰)
+        
+        mosescao@mail.ustc.edu.cn (Xiao-Yan Cao 曹晓岩)
+        
         
         ## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) License
         ----
@@ -235,13 +312,15 @@ Description: # ZMCintegral
         └───ZMC
         │   │   ZMCintegral_functional.py
         │   │   ZMCintegral_normal.py
+        │   │   ZMCintegral_multifunctions.py
         │   │   __init__.py
         │
         └───pics
+            │   multi-function.PNG
             │   sin6d.PNG 
             │   sin6d_theoretical.PNG 
-        	│   parameter integration.PNG
-        	│   parameter integration theoretical.PNG
+            │   parameter integration.PNG
+            │   parameter integration theoretical.PNG
         ```
         
         [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
