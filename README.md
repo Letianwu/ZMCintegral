@@ -21,6 +21,7 @@ ZMCintegral usually takes a few minutes to finish the task.
   - Stratified sampling
   - Heuristic tree search
   - Parameter grid search
+  - very many functions
   
 ## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) Installation
 
@@ -202,7 +203,7 @@ evaluation time 4.728282690048218
 ## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) Very many integrations
 
 #### Suppose integration is of the form and results can be obtained via
-
+![Image of expression 1](./pics/multi-function.PNG)
 
 #### In ZMCintegral this is done via
 ```
@@ -233,6 +234,15 @@ MC = MCintegral_multi_function(my_funcs = funs,
 result = MC.evaluate()
 print('result {}'.format(np.array(result).flatten()))
 print('evaluation time {:.4f} s'.format(time.time()-start))
+```
+
+#### The output is (which can be compared with Mathematica's results)
+
+```
+Detected total number of GPUs: 1
+Evaluating, please wait...
+result [-0.425192   -1.64925066]
+evaluation time 0.9935 s
 ```
 
 ## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) - tuning parameters
@@ -271,6 +281,8 @@ whz168@mail.ustc.edu.cn (Hong-Zhong Wu 伍宏忠)
 
 zjacob@mail.ustc.edu.cn (Jun-Jie Zhang 张俊杰)
 
+mosescao@mail.ustc.edu.cn (Xiao-Yan Cao 曹晓岩)
+
 
 ## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) License
 ----
@@ -295,10 +307,11 @@ ZMCintegral
 │   │   __init__.py
 │
 └───pics
+    │   multi-function.PNG
     │   sin6d.PNG 
     │   sin6d_theoretical.PNG 
-	│   parameter integration.PNG
-	│   parameter integration theoretical.PNG
+    │   parameter integration.PNG
+    │   parameter integration theoretical.PNG
 ```
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
