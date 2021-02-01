@@ -82,7 +82,8 @@ after evaluation.
 #### In ZMCintegral this is done via
 
 ```
-from ZMC.ZMCintegral_normal import MCintegral_normal
+# this is for installation by pip install zmcintegral
+from ZMCintegral.ZMC.ZMCintegral_normal import MCintegral_normal
 import math
 import numpy as np
 
@@ -144,7 +145,8 @@ evaluation time 37.8058066368103
 #### In ZMCintegral this is done via
 
 ```
-from ZMC.ZMCintegral_functional import MCintegral_functional
+# this is for installation by pip install zmcintegral
+from ZMCintegral.ZMC.ZMCintegral_functional import MCintegral_functional
 import math
 import numpy as np
 
@@ -205,7 +207,8 @@ evaluation time 4.728282690048218
 
 #### In ZMCintegral this is done via
 ```
-from ZMC.ZMCintegral_multifunctions import MCintegral_multi_function
+# this is for installation by pip install zmcintegral
+from ZMCintegral.ZMC.ZMCintegral_multifunctions import MCintegral_multi_function
 import math
 import numpy as np
 
