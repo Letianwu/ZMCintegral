@@ -187,7 +187,7 @@ result = print(np.reshape(result,[3,5]))
 print('evaluation time {}'.format(time.time()-start))
 
 ```
-#### The output is (which can be conpared with Mathematica's results)
+#### The output is (which can be compared with Mathematica's results)
 ```
 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 Detected total number of GPUs: 1
@@ -197,6 +197,42 @@ Evaluating, please wait...
  [-0.8100885  -0.23610632  0.55550291  0.83625073  0.34960498]
  [-0.23645369  0.55572789  0.83633015  0.34781143 -0.45968675]]
 evaluation time 4.728282690048218
+```
+
+## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) Very many integrations
+
+#### Suppose integration is of the form and results can be obtained via
+
+
+#### In ZMCintegral this is done via
+```
+from ZMC.ZMCintegral_multifunctions import MCintegral_multi_function
+import math
+import numpy as np
+
+import time
+start = time.time()
+
+# user defined function and domains
+funs = ["math.sin(x[0]+x[1]+x[2]+x[3])*math.tan(x[0])",\
+        "math.cos(x[0]+x[1]+x[2]+x[3])"]
+
+domains = [[[0,1],[0,10],[0,1],[0,1]],\
+           [[0,1],[0,10],[0,1],[0,1]]]
+
+# sample points is taken to 10**6
+sample_points = 10**6
+
+# call MCintegral_functional
+MC = MCintegral_multi_function(my_funcs = funs,
+                               domains = domains,
+                               head_node_address = "XXX.XXX.XXX.XXX:XXXX",
+                               num_points = sample_points)
+
+# obtaining the result
+result = MC.evaluate()
+print('result {}'.format(np.array(result).flatten()))
+print('evaluation time {:.4f} s'.format(time.time()-start))
 ```
 
 ## ![#1589F0](https://placehold.it/15/1589F0/000000?text=+) - tuning parameters
@@ -255,6 +291,7 @@ ZMCintegral
 └───ZMC
 │   │   ZMCintegral_functional.py
 │   │   ZMCintegral_normal.py
+│   │   ZMCintegral_multifunctions.py
 │   │   __init__.py
 │
 └───pics
