@@ -54,7 +54,7 @@ def MCkernel(domain, parameters,num_parameters,parameter_shape,parameter_off_set
             if parameter_id < total_size:
 
                 # local array to save current parameter grid value
-                aa = cuda.local.array(shape=num_parameters, dtype=nb.float32)
+                aa = cuda.local.array(shape=num_parameters, dtype=nb.int32)
                 for i in range(num_parameters):
                     aa[i] = 0
                 unravel(num_parameters,parameter_shape,parameter_id,aa)
@@ -63,9 +63,10 @@ def MCkernel(domain, parameters,num_parameters,parameter_shape,parameter_off_set
                 for i in range(num_parameters-1):
                     aa[i+1] = aa[i+1]+parameter_off_set[i]
 
-                # feed in parameter values to aa
+                # feed in parameter values to bb
+                bb = cuda.local.array(shape=num_parameters, dtype=nb.float32)
                 for i in range(num_parameters):
-                    aa[i] = parameters[aa[i]]
+                    bb[i] = parameters[aa[i]]
 
                 for i_sample in range(num_points):
                     
@@ -76,7 +77,7 @@ def MCkernel(domain, parameters,num_parameters,parameter_shape,parameter_off_set
 
                     # feed in values to user defined function, 
                     # and add all points' corresponding results in one chunk
-                    cuda.atomic.add(MCresult, thread_id, fun(x_tuple, aa))
+                    cuda.atomic.add(MCresult, thread_id, fun(x_tuple, bb))
 
     exec(my_func, globals())
 
