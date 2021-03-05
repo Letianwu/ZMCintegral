@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="ZMCintegral",
-    version="5.1",
+    version="5.2",
     author="Cao Xiao-Yan, ZHANG Jun-Jie",
     author_email="zjacob@mail.ustc.edu.cn",
     description="An easy way to use multi-GPUs to calculate multi-dimensional integration",
