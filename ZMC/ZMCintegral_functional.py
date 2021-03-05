@@ -54,7 +54,7 @@ def MCkernel(domain, parameters,num_parameters,parameter_shape,parameter_off_set
             if parameter_id < total_size:
 
                 # local array to save current parameter grid value
-                aa = cuda.local.array(shape=num_parameters, dtype=nb.int32)
+                aa = cuda.local.array(shape=num_parameters, dtype=nb.float32)
                 for i in range(num_parameters):
                     aa[i] = 0
                 unravel(num_parameters,parameter_shape,parameter_id,aa)
