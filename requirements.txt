@@ -3,7 +3,7 @@ async-generator==1.10
 attrs @ file:///tmp/build/80754af9/attrs_1604765588209/work
 backcall @ file:///home/ktietz/src/ci/backcall_1611930011877/work
 bleach @ file:///tmp/build/80754af9/bleach_1611690509631/work
-certifi==2020.12.5
+certifi==2022.12.7
 cffi==1.14.4
 chardet==4.0.0
 click==7.1.2
